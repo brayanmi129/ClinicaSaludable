@@ -21,9 +21,6 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Construir la app (opcional)
-        run: npm run build # ❗ Elimina esta línea si no tienes un paso de build
-
       - name: Login en Azure
         uses: azure/login@v1
         with:
