@@ -1,6 +1,4 @@
-# Despliega una aplicación Node.js en Azure App Service
-
-name: Deploy Node.js App to Azure Web App
+name: Deploy Express App to Azure Web App
 
 on:
   push:
@@ -9,10 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Necesario para actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout del repositorio
@@ -23,36 +22,8 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Instalar dependencias y compilar
-        run: |
-          npm install
-          npm run build --if-present
-          npm test --if-present
-
-      - name: Comprimir archivos para despliegue
-        run: zip -r release.zip . -x "*.git*"
-
-      - name: Subir artefacto
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: release.zip
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Descargar artefacto
-        uses: actions/download-artifact@v4
-        with:
-          name: node-app
+      - name: Instalar dependencias
+        run: npm install --omit=dev
 
       - name: Iniciar sesión en Azure
         uses: azure/login@v2
@@ -67,5 +38,5 @@ jobs:
         with:
           app-name: 'clinicabackend'
           slot-name: 'Production'
-          package: release.zip
+          package: .
           startup-command: 'npm start'
