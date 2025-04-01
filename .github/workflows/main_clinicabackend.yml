@@ -1,7 +1,6 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# Despliega una aplicación Node.js en Azure App Service
 
-name: Build and deploy Node.js app to Azure Web App - clinicabackend
+name: Deploy Node.js App to Azure Web App
 
 on:
   push:
@@ -11,29 +10,33 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # Necesario para actions/checkout
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
+      - name: Instalar dependencias y compilar
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
+          npm test --if-present
+
+      - name: Comprimir archivos para despliegue
+        run: zip -r release.zip . -x "*.git*"
+
+      - name: Subir artefacto
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,27 +45,27 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Descargar artefacto
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
-      - name: Login to Azure
+
+      - name: Iniciar sesión en Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5B1A7BC0AAE345EDB56C01401A368269 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AE9FD312AC3649738B4F0AD5D294F39F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5FC82BD5D92A4A508F97591CD52B10A7 }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Desplegar en Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'clinicabackend'
           slot-name: 'Production'
-          package: .
-          
+          package: release.zip
+          startup-command: 'npm start'
