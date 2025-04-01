@@ -28,9 +28,9 @@ jobs:
       - name: Iniciar sesión en Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5B1A7BC0AAE345EDB56C01401A368269 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AE9FD312AC3649738B4F0AD5D294F39F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5FC82BD5D92A4A508F97591CD52B10A7 }}
 
       - name: Desplegar en Azure Web App
         uses: azure/webapps-deploy@v3
