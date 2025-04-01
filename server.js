@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes); // Usa el router de usuarios en la ruta /api/users
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
