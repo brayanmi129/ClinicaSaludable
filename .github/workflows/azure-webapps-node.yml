@@ -29,5 +29,5 @@ jobs:
       - name: Deploy a App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "clinicasaludable" # Reemplaza con el nombre de tu App Service
+          app-name: "clinicasaludableback" # Reemplaza con el nombre de tu App Service
           package: "." # 🟢 Sube todo el código al App Service
