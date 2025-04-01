@@ -1,0 +1,36 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - main # O la rama que uses
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20 # Cambia si usas otra versión
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Construir la app (opcional)
+        run: npm run build # ❗ Elimina esta línea si no tienes un paso de build
+
+      - name: Login en Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy a App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "clinicasaludable" # Reemplaza con el nombre de tu App Service
+          package: "." # 🟢 Sube todo el código al App Service
