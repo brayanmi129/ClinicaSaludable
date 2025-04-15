@@ -1,0 +1,24 @@
+<!-- public/oauth-popup.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login con Google</title>
+  </head>
+  <body>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+
+      // Notificar al frontend principal
+      window.opener.postMessage({ type: "oauth-status", token }, "http://localhost:5173");
+
+      console.log("Token recibido:", token);
+      setTimeout(() => {
+        window.close();
+      }, 500);
+
+      console.log("Token recibido:", token);
+    </script>
+  </body>
+</html>

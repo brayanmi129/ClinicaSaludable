@@ -18,7 +18,6 @@ const config = {
 let poolPromise;
 
 async function getConnection() {
-  console.log(config.user, config.password, config.server, config.database);
   if (!poolPromise) {
     poolPromise = sql.connect(config);
   }
