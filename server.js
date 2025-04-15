@@ -45,6 +45,11 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes); // Usa el router de usuarios en la ruta /api/users
 app.use("/auth", authRoutes); // Usa el router de autenticación en la ruta /api/auth
 
+//enpoint para solicitudes no encontradas
+app.use((req, res) => {
+  res.status(404).json({ message: "Endpoint no encontrado" });
+});
+
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
