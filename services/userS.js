@@ -92,6 +92,21 @@ class UsersS {
       res.status(500).json({ message: "Error en el servidor" });
     }
   }
+
+  async registrerUser(req, res) {
+    const userData = req.body;
+    try {
+      const result = await userM.registerUser(userData);
+      if (result.success) {
+        res.status(200).json({ message: `Usuario ${id} eliminado exitosamente` });
+      } else {
+        res.status(404).json({ message: "Usuario no encontrado" });
+      }
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
 }
 
 module.exports = new UsersS();

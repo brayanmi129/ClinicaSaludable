@@ -2,7 +2,6 @@ require("dotenv").config();
 
 class AuthS {
   async OAuth(req, res) {
-    console.log("Google Auth Callback");
     try {
       const user = req.user;
 
@@ -10,10 +9,7 @@ class AuthS {
         console.log("No se encontró el usuario en la DB.");
         return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`);
       }
-
-      // Si el usuario existe, puedes generar un token o lo que necesites
-      const token = "Success"; // o un JWT
-      return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=${token}`);
+      return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=Success`);
     } catch (error) {
       return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`);
     }

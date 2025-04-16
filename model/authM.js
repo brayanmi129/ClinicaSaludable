@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const UsersM = require("./userM.js");
+const bcrypt = require("bcrypt");
 
 class AuthM {
   async OAuth(profile) {
@@ -8,6 +9,16 @@ class AuthM {
       return User;
     }
     return null;
+  }
+
+  async authLocal(email, password) {
+    const user = await UsersM.getByEmail(email);
+    if (!user) return { error: "Usuario no encontrado" };
+
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) return { error: "Contraseña incorrecta" };
+
+    return { user };
   }
 }
 module.exports = new AuthM();

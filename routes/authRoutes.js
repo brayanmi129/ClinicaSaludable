@@ -2,7 +2,30 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const AuthS = require("../services/authS.js"); // Importa el servicio de autenticación
+const AuthS = require("../services/authS.js");
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+
+    if (!user) {
+      return res.status(401).json({ success: false, message: info.message });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      return res.status(200).json({
+        success: true,
+        message: "Login exitoso",
+        user: {
+          id: user.id,
+          email: user.email,
+        },
+      });
+    });
+  })(req, res, next);
+});
 
 router.get(
   "/google",
@@ -35,5 +58,12 @@ router.get(
   }),
   AuthS.OAuth
 );
+
+router.get("/me", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "No autenticado" });
+  }
+  res.json(req.user);
+});
 
 module.exports = router;
