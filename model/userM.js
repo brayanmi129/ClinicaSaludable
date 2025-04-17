@@ -5,7 +5,11 @@ class UsersM {
   async getAll() {
     try {
       const pool = await getConnection();
-      const result = await pool.request().query("SELECT * FROM T_Users");
+      const result = await pool
+        .request()
+        .query(
+          "SELECT user_id, first_name , last_name, address , phone,birth_date , email,blood_type ,role_name FROM T_Users"
+        );
       return result.recordset;
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
@@ -142,7 +146,9 @@ class UsersM {
       password,
       blood_type,
       role_name,
-      extraData,
+      specialty,
+      allergies,
+      health_insurance,
     } = userData;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -180,13 +186,13 @@ class UsersM {
       roleReq.input("user_id", sql.Int, user_id);
 
       if (role_name === "DOCTOR") {
-        roleReq.input("specialty", sql.VarChar(100), extraData.specialty);
+        roleReq.input("specialty", sql.VarChar(100), specialty);
         await roleReq.query(
           `INSERT INTO T_Doctors (user_id, specialty) VALUES (@user_id, @specialty)`
         );
       } else if (role_name === "PATIENT") {
-        roleReq.input("health_insurance", sql.VarChar(100), extraData.health_insurance);
-        roleReq.input("allergies", sql.Text, extraData.allergies);
+        roleReq.input("health_insurance", sql.VarChar(100), health_insurance);
+        roleReq.input("allergies", sql.Text, allergies);
         await roleReq.query(
           `INSERT INTO T_Patients (user_id, health_insurance, allergies) VALUES (@user_id, @health_insurance, @allergies)`
         );

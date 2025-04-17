@@ -8,6 +8,6 @@ router.get("/email/:email", UsersS.getUsersByEmail);
 router.get("/role/:role", UsersS.getUsersByRole);
 router.post("/update/:id", UsersS.updateUserById);
 router.delete("/delete/:id", UsersS.deleteUserById);
-router.post("/resgistrer", UsersS.registrerUser);
+router.post("/register", UsersS.registrerUser);
 
 module.exports = router;
