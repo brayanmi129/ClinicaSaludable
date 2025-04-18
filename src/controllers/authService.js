@@ -99,7 +99,7 @@ export const handleGoogleLogin = () => {
     */
 
     const handleMessage = (event) => {
-      if (event.origin !== import.meta.env.VITE_API_URL) return;
+      //if (event.origin !== import.meta.env.VITE_API_URL) return;
 
       if (event.data.type === "oauth-status") {
         window.removeEventListener("message", handleMessage);
