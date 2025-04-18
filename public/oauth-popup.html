@@ -10,11 +10,11 @@
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
 
-      window.opener.postMessage({ type: "oauth-status", token }, "http://localhost:5173");
+      window.opener.postMessage({ type: "oauth-status", token }, "*");
 
       console.log("Token recibido:", token);
       setTimeout(() => {
-        // window.close();
+        window.close();
       }, 500);
 
       console.log("Token recibido:", token);
