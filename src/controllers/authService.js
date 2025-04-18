@@ -77,6 +77,7 @@ export const handleGoogleLogin = () => {
   //}
 
   return new Promise((resolve, reject) => {
+    console.log("Entra al promise...");
     const popup = window.open(
       import.meta.env.VITE_GOOGLE_AUTH_URL,
       "Inicia con Google",
@@ -84,6 +85,8 @@ export const handleGoogleLogin = () => {
     );
 
     const handleMessage = (event) => {
+      console.log("Entra al handleMessage...");
+      console.log(event);
       //if (event.origin !== import.meta.env.VITE_API_URL) return;
 
       if (event.data.type === "oauth-status") {
