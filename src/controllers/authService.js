@@ -1,6 +1,6 @@
 export const loginUser = async (email, password) => {
     try {
-      const response = await fetch('https://clinica-back.azurewebsites.net/login', {
+      const response = await fetch(`${import.meta.env.VITE_AUTH_URL}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
