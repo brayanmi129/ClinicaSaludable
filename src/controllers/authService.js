@@ -92,6 +92,19 @@ export const handleGoogleLogin = () => {
 
         if (event.data.token === "Success") {
           sessionStorage.setItem('authToken', event.data.token);
+          fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${event.data.token}`,
+            },
+            credentials: "include"
+          })
+          .then(res => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              throw new Error("Error al obtener los datos del usuario.");
+            }
+          })
           popup.close();
           resolve(true);
         } else {
