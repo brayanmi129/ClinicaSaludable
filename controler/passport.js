@@ -3,7 +3,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const MicrosoftStrategy = require("passport-microsoft").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const Auth = require("../model/authM.js");
-const UsersM = require("../model/userM.js");
 
 passport.use(
   new LocalStrategy(
@@ -66,18 +65,16 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, done) => {
-  console.log("Usuario serializado:", user.email);
-  done(null, user.email);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user.email);
+// });
 
-passport.deserializeUser(async (email, done) => {
-  try {
-    const user = await UsersM.getByEmail(email); // Esperamos la promesa
-    console.log("Usuario deserializado:", user);
-    done(null, user); // Ya con el usuario real
-  } catch (err) {
-    console.error("Error deserializando usuario", err);
-    done(err, null);
-  }
-});
+// passport.deserializeUser(async (email, done) => {
+//   try {
+//     const user = await UsersM.getByEmail(email);
+//     done(null, user);
+//   } catch (err) {
+//     console.error("Error deserializando usuario", err);
+//     done(err, null);
+//   }
+// });

@@ -1,8 +1,8 @@
-// routes/authRoutes.js
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const AuthS = require("../services/authS.js");
+const verifyJWT = require("../middlewares/verifyJWT");
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -38,6 +38,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
+    session: false,
     failureRedirect: `${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`,
   }),
   AuthS.OAuth
@@ -59,11 +60,8 @@ router.get(
   AuthS.OAuth
 );
 
-router.get("/me", (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "No autenticado" });
-  }
-  res.json(req.user);
+router.get("/me", verifyJWT, (req, res) => {
+  res.json({ user: req.user });
 });
 
 module.exports = router;

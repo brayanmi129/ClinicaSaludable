@@ -24,21 +24,21 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    secret: "Clinica123",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: false,
-      secure: isproduction ? true : false, // En producción, secure debe ser true
-      sameSite: isproduction ? "none" : "lax", // En producción, sameSite debe ser "none"
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: "Clinica123",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       httpOnly: false,
+//       secure: isproduction ? true : false, // En producción, secure debe ser true
+//       sameSite: isproduction ? "none" : "lax", // En producción, sameSite debe ser "none"
+//     },
+//   })
+// );
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 const userRoutes = require("./routes/usersRoutes"); // Importa las rutas de usuarios
 const authRoutes = require("./routes/authRoutes"); // Importa las rutas de autenticación
