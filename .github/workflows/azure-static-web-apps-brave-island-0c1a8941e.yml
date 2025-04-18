@@ -33,4 +33,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: "Clinica-del-norte"
-          package: "." 
+          package: "./dist" 
