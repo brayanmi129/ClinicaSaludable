@@ -56,6 +56,7 @@ const loginWithGoogle = async () => {
 
   try {
     const result = await handleGoogleLogin();
+    console.log(result);
     if (result) {
       navigate('/home');
     }

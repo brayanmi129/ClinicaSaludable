@@ -69,12 +69,12 @@ export const handleMicrosoftLogin = () => {
 };
 
 export const handleGoogleLogin = () => {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
-  if (isMobile) {
-    window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
-    return;
-  }
+  //if (isMobile) {
+  //  window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
+  //  return;
+  //}
 
   return new Promise((resolve, reject) => {
     const popup = window.open(
@@ -82,21 +82,6 @@ export const handleGoogleLogin = () => {
       "Inicia con Google",
       "width=500,height=600"
     );
-
-    /*
-    if (!popup) {
-      reject(new Error("No se pudo abrir la ventana de inicio de sesión."));
-      return;
-    }
-
-    const checkPopupClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkPopupClosed);
-        window.removeEventListener("message", handleMessage);
-        reject(new Error("La ventana de inicio de sesión se cerró."));
-      }
-    }, 500);
-    */
 
     const handleMessage = (event) => {
       //if (event.origin !== import.meta.env.VITE_API_URL) return;
