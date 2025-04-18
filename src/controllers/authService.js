@@ -99,6 +99,8 @@ export const handleGoogleLogin = () => {
         } else {
           reject(new Error("Error al iniciar sesión con Google."));
         }
+      }else{
+        console.log("No es el evento esperado...");
       }
     };
 
