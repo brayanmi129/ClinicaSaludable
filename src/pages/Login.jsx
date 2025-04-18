@@ -93,7 +93,7 @@ return (
                             name="password"
                             type="password"
                             id="password"
-                            placeholder=" "
+                            placeholder=""
                             className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2.5 text-[1.2em] bg-white
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             onChange={(e) => setPassword(e.target.value)}
@@ -141,7 +141,7 @@ return (
                 <div className='flex items-center gap-4 my-6 lg:w-5/6 pb-10'>
                     <span className="text-blue-600 text-l underline"><a href="">¿Olvidaste tu contraseña?</a></span>
                     <hr className="flex-grow border-t border-gray-300" />
-                    <span className="text-blue-600 text-l underline"><a href="">Ayuda</a></span>
+                    <span className="text-blue-600 text-l underline"><a href="">Ayuda?</a></span>
                 </div>
             </div>
         </div>
