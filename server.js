@@ -31,8 +31,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: false,
-      secure: isProduction ? true : false, // En producción, secure debe ser true
-      sameSite: isProduction ? "none" : "lax", // En producción, sameSite debe ser "none"
+      secure: isproduction ? true : false, // En producción, secure debe ser true
+      sameSite: isproduction ? "none" : "lax", // En producción, sameSite debe ser "none"
     },
   })
 );
