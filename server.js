@@ -6,6 +6,8 @@ const passport = require("passport");
 require("dotenv").config();
 require("./controler/passport");
 
+const isproduction = process.env.NODE_ENV === "production";
+
 const PORT = process.env.PORT || 3000;
 
 //midelwares
@@ -29,8 +31,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: false,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction ? true : false, // En producción, secure debe ser true
+      sameSite: isProduction ? "none" : "lax", // En producción, sameSite debe ser "none"
     },
   })
 );
