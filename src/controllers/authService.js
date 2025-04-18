@@ -91,6 +91,7 @@ export const handleGoogleLogin = () => {
         window.removeEventListener("message", handleMessage);
 
         if (event.data.token === "Success") {
+          sessionStorage.setItem('authToken', event.data.token);
           popup.close();
           resolve(true);
         } else {

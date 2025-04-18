@@ -58,6 +58,7 @@ const loginWithGoogle = async () => {
     const result = await handleGoogleLogin();
     console.log(result);
     if (result) {
+      console.log('Usuario autenticado con Google:', result);
       navigate('/home');
     }
   } catch (err) {
