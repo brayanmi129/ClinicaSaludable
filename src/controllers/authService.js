@@ -83,6 +83,7 @@ export const handleGoogleLogin = () => {
       "width=500,height=600"
     );
 
+    /*
     if (!popup) {
       reject(new Error("No se pudo abrir la ventana de inicio de sesión."));
       return;
@@ -95,6 +96,7 @@ export const handleGoogleLogin = () => {
         reject(new Error("La ventana de inicio de sesión se cerró."));
       }
     }, 500);
+    */
 
     const handleMessage = (event) => {
       if (event.origin !== import.meta.env.VITE_API_URL) return;
