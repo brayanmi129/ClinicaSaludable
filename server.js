@@ -30,7 +30,7 @@ app.use(
     cookie: {
       httpOnly: false,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
     },
   })
 );
