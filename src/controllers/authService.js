@@ -92,6 +92,7 @@ export const handleGoogleLogin = () => {
 
         if (event.data.token === "Success") {
           sessionStorage.setItem('authToken', event.data.token);
+          fetch(import.meta.env.VITE_API_AUTH)
           popup.close();
           resolve(true);
         } else {
