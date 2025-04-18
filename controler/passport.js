@@ -4,27 +4,27 @@ const MicrosoftStrategy = require("passport-microsoft").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const Auth = require("../model/authM.js");
 
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: "email",
-      passwordField: "password",
-    },
-    async (email, password, done) => {
-      try {
-        const result = await Auth.authLocal(email, password);
+// passport.use(
+//   new LocalStrategy(
+//     {
+//       usernameField: "email",
+//       passwordField: "password",
+//     },
+//     async (email, password, done) => {
+//       try {
+//         const result = await Auth.authLocal(email, password);
 
-        if (result.error) {
-          return done(null, false, { message: result.error });
-        }
+//         if (result.error) {
+//           return done(null, false, { message: result.error });
+//         }
 
-        return done(null, result.user, { message: "Credenciales correctas" });
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
+//         return done(null, result.user, { message: "Credenciales correctas" });
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   )
+// );
 
 passport.use(
   new GoogleStrategy(

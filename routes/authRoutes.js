@@ -4,28 +4,7 @@ const passport = require("passport");
 const AuthS = require("../services/authS.js");
 const verifyJWT = require("../middlewares/verifyJWT");
 
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-
-    if (!user) {
-      return res.status(401).json({ success: false, message: info.message });
-    }
-
-    req.logIn(user, (err) => {
-      if (err) return next(err);
-
-      return res.status(200).json({
-        success: true,
-        message: "Login exitoso",
-        user: {
-          id: user.id,
-          email: user.email,
-        },
-      });
-    });
-  })(req, res, next);
-});
+router.post("/login", AuthS.loginLocal);
 
 router.get(
   "/google",

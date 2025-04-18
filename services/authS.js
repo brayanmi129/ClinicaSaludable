@@ -1,5 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const Auth = require("../model/AuthM.js");
 
 class AuthS {
   async OAuth(req, res) {
@@ -45,6 +46,29 @@ class AuthS {
       `);
     } catch (error) {
       return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=fail&satus=fail`);
+    }
+  }
+
+  async loginLocal(req, res) {
+    try {
+      const email = req.email;
+      const password = req.password;
+      const result = await Auth.authLocal(email, password);
+      if (result.error) {
+        return res.status(401).json({ message: result.error });
+      }
+      const user = result.user;
+      const payload = {
+        id: user.user_id,
+        email: user.email,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "3h",
+      });
+      console.log("Token generado:", token);
+      return res.json({ token });
+    } catch (e) {
+      return res.status(500).json({ message: "Error al iniciar sesión" });
     }
   }
 
