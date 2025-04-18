@@ -29,8 +29,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: false,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
     },
   })
 );
