@@ -22,7 +22,7 @@ jobs:
         run: npm install
         
       - name: Build
-        run: npm vite build
+        run: npm run build
 
       - name: Login en Azure
         uses: azure/login@v1
