@@ -76,34 +76,29 @@ export const handleGoogleLogin = () => {
   //  return;
   //}
 
-  return new Promise((resolve, reject) => {
-    console.log("Entra al promise...");
-    const popup = window.open(
-      import.meta.env.VITE_GOOGLE_AUTH_URL,
-      "Inicia con Google",
-      "width=500,height=600"
-    );
+return new Promise((resolve, reject) => {
+  const popup = window.open(
+    import.meta.env.VITE_GOOGLE_AUTH_URL,
+    "Inicia con Google",
+    "width=500,height=600"
+  );
 
-    const handleMessage = (event) => {
-      console.log("Entra al handleMessage...");
-      console.log(event);
-      //if (event.origin !== import.meta.env.VITE_API_URL) return;
+  const handleMessage = (event) => {
+    //if (event.origin !== import.meta.env.VITE_API_URL) return;
 
-      if (event.data.type === "oauth-status") {
-        window.removeEventListener("message", handleMessage);
+    console.log(event);
+    if (event.data.type === "oauth-status") {
+      window.removeEventListener("message", handleMessage);
 
-        if (event.data.token === "Success") {
-          popup.close();
-          console.log("Success");
-          resolve(true);
-        } else {
-          reject(new Error("Error al iniciar sesión con Google."));
-        }
-      }else{
-        console.log("No es el evento esperado...");
+      if (event.data.token === "Success") {
+        popup.close();
+        resolve(true);
+      }else {
+        reject(new Error("Error al iniciar sesión con Google."));
       }
-    };
+    }
+  };
 
-    window.addEventListener("message", handleMessage);
+  window.addEventListener("message", handleMessage);
   });
 };
