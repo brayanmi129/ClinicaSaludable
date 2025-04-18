@@ -91,6 +91,7 @@ export const handleGoogleLogin = () => {
 
         if (event.data.token === "Success") {
           popup.close();
+          console.log("Success");
           resolve(true);
         } else {
           reject(new Error("Error al iniciar sesión con Google."));
