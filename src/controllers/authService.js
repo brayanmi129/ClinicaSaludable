@@ -9,7 +9,7 @@ export const loginUser = async (email, password) => {
       });
   
       if (!response.ok) {
-        throw new Error('Credenciales incorrectas');
+        throw new Error('Credenciales incorrectas.');
       }
   
       return await response.json();
@@ -54,14 +54,15 @@ export const handleMicrosoftLogin = () => {
 
       if (event.data.type === "oauth-status") {
         window.removeEventListener("message", handleMessage);
-
-        if (event.data.token === "Success") {
+      
+        if (event.data.token && event.data.token !== "Failed") {
+          sessionStorage.setItem('authToken', event.data.token);
           popup.close();
           resolve(true);
         } else {
-          reject(new Error("Error al iniciar sesión con Microsoft"));
+          reject(new Error("Error al iniciar sesión"));
         }
-      }
+      }      
     };
 
     window.addEventListener("message", handleMessage);
@@ -76,29 +77,28 @@ export const handleGoogleLogin = () => {
     return;
   }
 
-return new Promise((resolve, reject) => {
-  const popup = window.open(
-    import.meta.env.VITE_GOOGLE_AUTH_URL,
-    "Inicia con Google",
-    "width=500,height=600"
-  );
+  return new Promise((resolve, reject) => {
+    const popup = window.open(
+      import.meta.env.VITE_GOOGLE_AUTH_URL,
+      "Inicia con Google",
+      "width=500,height=600"
+    );
 
-  const handleMessage = (event) => {
-    if (event.origin !== import.meta.env.VITE_FRONT_URL) return;
+    const handleMessage = (event) => {
+      //if (event.origin !== import.meta.env.VITE_API_URL) return;
 
-    console.log(event);
-    if (event.data.type === "oauth-status") {
-      window.removeEventListener("message", handleMessage);
+      if (event.data.type === "oauth-status") {
+        window.removeEventListener("message", handleMessage);
 
-      if (event.data.token === "Success") {
-        popup.close();
-        resolve(true);
-      }else {
-        reject(new Error("Error al iniciar sesión con Google."));
+        if (event.data.token === "Success") {
+          popup.close();
+          resolve(true);
+        } else {
+          reject(new Error("Error al iniciar sesión con Google."));
+        }
       }
-    }
-  };
+    };
 
-  window.addEventListener("message", handleMessage);
+    window.addEventListener("message", handleMessage);
   });
 };
