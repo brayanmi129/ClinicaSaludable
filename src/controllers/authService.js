@@ -69,12 +69,12 @@ export const handleMicrosoftLogin = () => {
 };
 
 export const handleGoogleLogin = () => {
-  //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
-  //if (isMobile) {
-  //  window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
-  //  return;
-  //}
+  if (isMobile) {
+    window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
+    return;
+  }
 
 return new Promise((resolve, reject) => {
   const popup = window.open(
@@ -84,7 +84,7 @@ return new Promise((resolve, reject) => {
   );
 
   const handleMessage = (event) => {
-    //if (event.origin !== import.meta.env.VITE_API_URL) return;
+    if (event.origin !== import.meta.env.VITE_FRONT_URL) return;
 
     console.log(event);
     if (event.data.type === "oauth-status") {
