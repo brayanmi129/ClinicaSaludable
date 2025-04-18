@@ -1,6 +1,6 @@
 export const loginUser = async (email, password) => {
     try {
-      const response = await fetch('https://api.tuapp.com/login', {
+      const response = await fetch('https://clinica-back.azurewebsites.net/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -14,10 +14,9 @@ export const loginUser = async (email, password) => {
   
       return await response.json();
     } catch (error) {
-      // Interceptamos errores como "Failed to fetch" para personalizar el mensaje
       if (error.message === 'Failed to fetch') {
         throw new Error('No se pudo conectar con el servidor. Verifica tu conexión.');
       }
-      throw error; // Mantenemos el error original si no es el esperado
+      throw error;
     }
   };

@@ -20,12 +20,20 @@ return (
     <div className="h-screen w-full flex items-center justify-center">
         <div className="bg-blue-600 h-full w-3/7 p-20 hidden flex-col box-border lg:block">
             <div className="w-full h-1/15 flex items-center">
-                <div className="h-full w-1/3 border-r-2 border-sky-50 mr-10 pr-10 lg:w-1/3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-full h-full">
-                        <path fillRule="evenodd" d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clipRule="evenodd" />
+                <div className="min-h-full max-h-full pr-5 flex items-center justify-center w-6 sm:w-8 md:w-20 aspect-square overflow-hidden">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        className="w-full h-full"
+                    >
+                    <path fillRule="evenodd" d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clipRule="evenodd" />
                     </svg>
                 </div>
-                <div className="w-2/3 text-lg sm:text-xl md:text-2xl font-bold text-sky-50" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                <div
+                    className="whitespace-nowrap w-full text-[1.5em] sm:text-xl md:text-2xl font-bold h-full flex items-center text-sky-50 px-5 border-l-2 border-sky-50"
+                    style={{ fontFamily: 'Nunito, sans-serif' }}
+                >
                     <h3>Clínica del Norte</h3>
                 </div>
             </div>
@@ -43,15 +51,15 @@ return (
                 </div>
             </div>
         </div>
-        <div className="w-full h-full shadow-xl/90 p-10 sm:p-20 flex flex-col justify-center items-center lg:w-3/4 lg:items-start">
+        <div className="w-full h-full shadow-xl/90 p-10 lg:p-20 flex flex-col justify-center items-center lg:w-3/4 lg:items-start overflow-auto">
             <div className='w-full h-full lg:w-3/4 flex flex-col gap-5'>
-                <div className="w-full h-1/15 flex items-center justify-start lg:hidden ">
-                    <div className="h-full w-1/3 sm:w-1/2 md:w-1/3 border-r-2 border-blue-600 mr-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full fill-blue-600">
+                <div className="w-full h-1/15 flex items-center justify-start lg:hidden mb-10">
+                    <div className="min-h-full max-h-full flex items-center justify-center w-20 pr-5 aspect-square overflow-hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full fill-blue-600 max-h-full">
                             <path fillRule="evenodd" d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clipRule="evenodd" />
                         </svg>
                     </div>
-                    <div className="w-2/3 text-lg sm:text-xl md:text-2xl lg:text-3x1 font-bold text-blue-600" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                    <div className="whitespace-nowrap px-5 h-full flex items-center border-l-2 border-blue-600 w-2/3 text-[1.5em] font-bold text-blue-600" style={{ fontFamily: 'Nunito, sans-serif' }}>
                         <h3>Clínica del Norte</h3>
                     </div>
                 </div>
@@ -59,7 +67,7 @@ return (
                     <div className='w-full h-fit text-[2.2em] font-bold text-blue-600'>
                         <h3>Inicia sesión</h3>
                     </div>
-                    <div className='w-full text-[1.2em] mb-10 text-gray-700'>
+                    <div className='w-full text-[1.2em] mb-5 text-gray-700'>
                         <p>Ingresa a tu cuenta para programar citas, descargar resultados y más.</p>
                     </div>
                     <div>
@@ -130,7 +138,7 @@ return (
                         </div>
                     </div>
                 </div>
-                <div className='flex items-center gap-4 my-6 lg:w-5/6'>
+                <div className='flex items-center gap-4 my-6 lg:w-5/6 pb-10'>
                     <span className="text-blue-600 text-l underline"><a href="">¿Olvidaste tu contraseña?</a></span>
                     <hr className="flex-grow border-t border-gray-300" />
                     <span className="text-blue-600 text-l underline"><a href="">Ayuda</a></span>
