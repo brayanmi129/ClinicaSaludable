@@ -13,7 +13,11 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://clinica-del-norte.azurewebsites.net"],
+    origin: [
+      "http://localhost:5173",
+      "https://clinica-del-norte.azurewebsites.net",
+      "https://clinica-norte.azurewebsites.net",
+    ],
     credentials: true,
   })
 );
