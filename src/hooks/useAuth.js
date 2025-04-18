@@ -1,6 +1,6 @@
+import { loginUser, handleMicrosoftLogin, handleGoogleLogin } from '../controllers/authService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../controllers/authService';
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,5 +34,36 @@ export const useAuth = () => {
     }
   };
 
-  return { login, isLoading, errorMessage };
+  const loginWithMicrosoft = async () => {
+    setIsLoading(true);
+    setErrorMessage('');
+
+    try {
+      const result = await handleMicrosoftLogin();
+      if (result) {
+        navigate('/home');
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Error al iniciar sesión con Microsoft.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+const loginWithGoogle = async () => {
+  setIsLoading(true);
+  setErrorMessage('');
+
+  try {
+    const result = await handleGoogleLogin();
+    if (result) {
+      navigate('/home');
+    }
+  } catch (err) {
+    setErrorMessage(err.message || 'Error al iniciar sesión con Google.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+  return { login, loginWithMicrosoft, loginWithGoogle, isLoading, errorMessage };
 };

@@ -14,11 +14,11 @@ const Spinner = () => (
 const Login = () => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
-const { login, isLoading, errorMessage } = useAuth();
+const { login, loginWithMicrosoft, loginWithGoogle, isLoading, errorMessage } = useAuth();
 
 return (
-    <div className="h-screen w-full flex items-center justify-center">
-        <div className="bg-blue-600 h-full w-3/7 p-20 hidden flex-col box-border lg:block">
+    <div className="h-full w-full flex items-center justify-center">
+        <div className="bg-blue-600 h-full w-3/7 p-20 hidden flex-col box-border lg:display-block lg:flex lg:items-center lg:justify-center lg:w-3/7 lg:h-screen">
             <div className="w-full h-1/15 flex items-center">
                 <div className="min-h-full max-h-full pr-5 flex items-center justify-center w-6 sm:w-8 md:w-20 aspect-square overflow-hidden">
                     <svg
@@ -51,7 +51,7 @@ return (
                 </div>
             </div>
         </div>
-        <div className="w-full h-full shadow-xl/90 p-10 lg:p-20 flex flex-col justify-center items-center lg:w-3/4 lg:items-start overflow-auto">
+        <div className="w-full h-screen shadow-xl/90 p-10 lg:p-20 flex flex-col justify-start items-center lg:w-3/4 lg:items-start overflow-auto">
             <div className='w-full h-full lg:w-3/4 flex flex-col gap-5'>
                 <div className="w-full h-1/15 flex items-center justify-start lg:hidden mb-10">
                     <div className="min-h-full max-h-full flex items-center justify-center w-20 pr-5 aspect-square overflow-hidden">
@@ -93,7 +93,7 @@ return (
                             name="password"
                             type="password"
                             id="password"
-                            placeholder=""
+                            placeholder=" "
                             className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2.5 text-[1.2em] bg-white
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             onChange={(e) => setPassword(e.target.value)}
@@ -125,20 +125,20 @@ return (
                     </div>
                     <div className='flex flex-col w-full justify-around text-[1.2em]'>
                         <div className='w-full h-[70px] mb-5'>
-                            <button className="cursor-pointer flex items-center justify-center w-full h-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition">
+                            <button className="cursor-pointer flex items-center justify-center w-full h-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition" onClick={loginWithGoogle}>
                                 <img src={GoogleLogo} alt="Google" className="w-10 h-10" />
                                 <span className="text-gray-700">Ingresa con Google</span>
                             </button>
                         </div>
                         <div className='w-full h-[70px]'>
-                            <button className="cursor-pointer h-full flex items-center justify-center w-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition">
+                            <button className="cursor-pointer h-full flex items-center justify-center w-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition" onClick={loginWithMicrosoft}>
                                 <img src={MSLogo} alt="Google" className="w-10 h-10" />
                                 <span className="text-gray-700">Ingresa con Microsoft</span>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div className='flex items-center gap-4 my-6 lg:w-5/6 pb-10'>
+                <div className='flex items-center gap-4 my-6 lg:w-5/6'>
                     <span className="text-blue-600 text-l underline"><a href="">¿Olvidaste tu contraseña?</a></span>
                     <hr className="flex-grow border-t border-gray-300" />
                     <span className="text-blue-600 text-l underline"><a href="">Ayuda?</a></span>
