@@ -10,7 +10,6 @@
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
 
-      // Notificar al frontend principal
       window.opener.postMessage({ type: "oauth-status", token }, "http://localhost:5173");
 
       console.log("Token recibido:", token);
