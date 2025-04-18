@@ -13,15 +13,14 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true, // <- ¡Esto es importante para que se acepten cookies!
+    origin: ["http://localhost:5173", "https://clinica-del-norte.azurewebsites.net"],
+    credentials: true,
   })
 );
 
-// 1. Middleware de sesión (requiere una clave secreta)
 app.use(
   session({
-    secret: "Clinica123", // Usa algo seguro en producción
+    secret: "Clinica123",
     resave: false,
     saveUninitialized: false,
     cookie: {
