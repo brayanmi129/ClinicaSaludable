@@ -67,7 +67,7 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log("Usuario serializado:", user);
+  console.log("Usuario serializado:", user.email);
   done(null, user.email);
 });
 
