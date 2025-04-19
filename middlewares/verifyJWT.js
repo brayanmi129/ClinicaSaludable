@@ -14,7 +14,7 @@ function verifyJWT(req, res, next) {
     id = decoded.user.id;
     userM.getById(id).themp((user) => {
       if (!user) {
-        return res.status(401).json({ message: "Usuario no encontrado" });
+        return res.status(401).json({ message: "Usuario no encontradoo" });
       }
       req.user = user;
     });
