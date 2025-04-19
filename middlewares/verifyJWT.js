@@ -11,13 +11,7 @@ function verifyJWT(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    id = decoded.user.id;
-    userM.getById(id).themp((user) => {
-      if (!user) {
-        return res.status(401).json({ message: "Usuario no encontradoo" });
-      }
-      req.user = user;
-    });
+    req.user = decoded.user.id;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Token inválido o expirado" });
