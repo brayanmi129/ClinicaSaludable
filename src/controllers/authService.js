@@ -104,7 +104,7 @@ export const handleGoogleLogin = () => {
       console.log("Estado recibido:", status);
 
       if (status === "Success") {
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
 
         fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
           headers: {
