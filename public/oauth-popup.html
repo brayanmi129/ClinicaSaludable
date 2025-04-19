@@ -1,20 +1,26 @@
-<html>
+<!-- public/oauth-popup.html -->
+<!DOCTYPE html>
+<html lang="es">
   <head>
-    <title>OAuth Success</title>
+    <meta charset="UTF-8" />
+    <title>Login con Google</title>
+  </head>
+  <body>
     <script>
-      const error = "error";
-      window.opener.postMessage({ error, status: "Fail" }, "http://localhost:5173");
+      const params = new URLSearchParams(window.location.search);
+
+      window.opener.postMessage({ token: "Fail", status: "Fail" }, "http://localhost:5173");
       window.opener.postMessage(
-        { error, status: "Fail" },
+        { token: "Fail", status: "Fail" },
         "https://clinica-norte.azurewebsites.net"
       );
 
+      console.log("Token recibido:", token);
       setTimeout(() => {
-        // window.close();
+        window.close();
       }, 500);
+
+      console.log("Token recibido:", token);
     </script>
-  </head>
-  <body>
-    <p>Autenticando...</p>
   </body>
 </html>
