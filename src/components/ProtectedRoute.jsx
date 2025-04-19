@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      const token = sessionStorage.getItem('authToken');
+      const token = sessionStorage.getItem("token");
       if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
@@ -16,10 +16,10 @@ const ProtectedRoute = ({ children }) => {
 
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include"
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
         });
 
         if (res.ok) {
