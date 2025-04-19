@@ -25,14 +25,14 @@ export const handleMicrosoftLogin = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
-    window.location.href = import.meta.env.VITE_MS_AUTH_URL;
+    window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
     return;
   }
 
   return new Promise((resolve, reject) => {
     const popup = window.open(
       import.meta.env.VITE_MS_AUTH_URL,
-      "Inicia con Microsoft",
+      "Ingresa con Microsoft",
       "width=500,height=600"
     );
 
@@ -50,18 +50,31 @@ export const handleMicrosoftLogin = () => {
     }, 500);
 
     const handleMessage = (event) => {
-      if (event.origin !== import.meta.env.VITE_FRONT_URL) return;
+      const { token, status } = event.data;
+      if (token && status === "Success") {
+        sessionStorage.setItem("authToken", token);
 
-      if (event.data.type === "oauth-status") {
+        clearInterval(checkPopupClosed);
         window.removeEventListener("message", handleMessage);
+        popup.close();
 
-        if (event.data.token && event.data.token !== "Failed") {
-          sessionStorage.setItem("authToken", event.data.token);
-          popup.close();
-          resolve(true);
-        } else {
-          reject(new Error("Error al iniciar sesión"));
-        }
+        fetch(`${import.meta.env.VITE_AUTH_ME}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            resolve(true);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }else if (status === "Fail") {
+        clearInterval(checkPopupClosed);
+        window.removeEventListener("message", handleMessage);
+        popup.close();
+        reject(new Error("No se pudo iniciar sesión con Microsoft."));
       }
     };
 
@@ -80,7 +93,7 @@ export const handleGoogleLogin = () => {
   return new Promise((resolve, reject) => {
     const popup = window.open(
       import.meta.env.VITE_GOOGLE_AUTH_URL,
-      "Inicia con Google",
+      "Ingresa con Google",
       "width=500,height=600"
     );
 
@@ -89,24 +102,43 @@ export const handleGoogleLogin = () => {
       return;
     }
 
-    window.addEventListener("message", (event) => {
-      const {token, status} = event.data;
-      if(token && status === "Success"){
+    const checkPopupClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkPopupClosed);
+        window.removeEventListener("message", handleMessage);
+        reject(new Error("La ventana de inicio de sesión se cerró."));
+      }
+    }, 500);
+
+    const handleMessage = (event) => {
+      const { token, status } = event.data;
+      if (token && status === "Success") {
         sessionStorage.setItem("authToken", token);
-        fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+
+        clearInterval(checkPopupClosed);
+        window.removeEventListener("message", handleMessage);
+        popup.close();
+
+        fetch(`${import.meta.env.VITE_AUTH_ME}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
           .then((res) => res.json())
           .then((data) => {
-            //const user = data.user;
             resolve(true);
           })
           .catch((err) => {
-            console.error("Error al obtener el usuario:", err);
-        });
+            reject(err);
+          });
+      }else if (status === "Fail") {
+        clearInterval(checkPopupClosed);
+        window.removeEventListener("message", handleMessage);
+        popup.close();
+        reject(new Error("No se pudo iniciar sesión con Google."));
       }
-    });
+    };
+
+    window.addEventListener("message", handleMessage);
   });
 };
