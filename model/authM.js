@@ -10,6 +10,7 @@ class AuthM {
   }
 
   async authLocal(email, password) {
+    console.log("Email", email);
     const user = await UsersM.getByEmail(email);
     if (!user) return { error: "Usuario no encontrado" };
 

@@ -18,6 +18,7 @@ class UsersM {
   }
 
   async getByEmail(email) {
+    console.log("Email", email);
     try {
       const pool = await getConnection();
       const result = await pool

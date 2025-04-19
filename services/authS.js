@@ -50,9 +50,9 @@ class AuthS {
   }
 
   async loginLocal(req, res) {
+    console.log(req.body);
     try {
-      const email = req.email;
-      const password = req.password;
+      const { email, password } = req.body;
       const result = await Auth.authLocal(email, password);
       if (result.error) {
         return res.status(401).json({ message: result.error });
