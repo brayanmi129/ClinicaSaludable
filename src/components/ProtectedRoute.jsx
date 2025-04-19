@@ -18,8 +18,7 @@ const ProtectedRoute = ({ children }) => {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
-            },
-            credentials: "include"
+            }
         });
 
         if (res.ok) {
