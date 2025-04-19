@@ -8,6 +8,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyToken = async () => {
       const token = sessionStorage.getItem("token");
+
       if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
