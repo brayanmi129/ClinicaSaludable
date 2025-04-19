@@ -1,4 +1,4 @@
-import { loginUser, handleMicrosoftLogin, handleGoogleLogin } from '../controllers/authService';
+import { loginUser, logoutUser, handleMicrosoftLogin, handleGoogleLogin } from '../controllers/authService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -65,5 +65,11 @@ const loginWithGoogle = async () => {
     setIsLoading(false);
   }
 };
-  return { login, loginWithMicrosoft, loginWithGoogle, isLoading, errorMessage };
+
+  const logout = () => {
+    logoutUser();
+    navigate('/');
+  };
+
+  return { login, logout, loginWithMicrosoft, loginWithGoogle, isLoading, errorMessage };
 };

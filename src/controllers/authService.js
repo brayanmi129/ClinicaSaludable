@@ -111,6 +111,7 @@ export const handleGoogleLogin = () => {
     }, 500);
 
     const handleMessage = (event) => {
+      console.log(event);
       const { token, status } = event.data;
       if (token && status === "Success") {
         sessionStorage.setItem("authToken", token);
@@ -141,4 +142,8 @@ export const handleGoogleLogin = () => {
 
     window.addEventListener("message", handleMessage);
   });
+};
+
+export const logoutUser = () => {
+  sessionStorage.removeItem('authToken');
 };

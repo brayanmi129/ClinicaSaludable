@@ -138,7 +138,7 @@ return (
                         </div>
                     </div>
                 </div>
-                <div className='flex items-center gap-4 my-6 lg:w-5/6'>
+                <div className='flex items-center gap-4 my-6 lg:w-5/6 pb-20'>
                     <span className="text-blue-600 text-l underline"><a href="">¿Olvidaste tu contraseña?</a></span>
                     <hr className="flex-grow border-t border-gray-300" />
                     <span className="text-blue-600 text-l underline"><a href="">¿Ayuda?</a></span>
