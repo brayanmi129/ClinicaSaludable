@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>OAuth Success</title>
+    <script>
+      const error = "error";
+      window.opener.postMessage({ error, status: "Fail" }, "http://localhost:5173");
+      window.opener.postMessage(
+        { error, status: "Fail" },
+        "https://clinica-norte.azurewebsites.net"
+      );
+
+      setTimeout(() => {
+        window.close();
+      }, 500);
+    </script>
+  </head>
+  <body>
+    <p>Autenticando...</p>
+  </body>
+</html>
