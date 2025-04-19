@@ -7,20 +7,14 @@
   </head>
   <body>
     <script>
-      const params = new URLSearchParams(window.location.search);
-
       window.opener.postMessage({ token: "Fail", status: "Fail" }, "http://localhost:5173");
       window.opener.postMessage(
         { token: "Fail", status: "Fail" },
         "https://clinica-norte.azurewebsites.net"
       );
-
-      console.log("Token recibido:", token);
       setTimeout(() => {
         window.close();
       }, 500);
-
-      console.log("Token recibido:", token);
     </script>
   </body>
 </html>
