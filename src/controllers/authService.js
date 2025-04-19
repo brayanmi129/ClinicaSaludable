@@ -1,29 +1,29 @@
 export const loginUser = async (email, password) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_AUTH_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-  
-      if (!response.ok) {
-        throw new Error('Credenciales incorrectas.');
-      }
-  
-      return await response.json();
-    } catch (error) {
-      if (error.message === 'Failed to fetch') {
-        throw new Error('No se pudo conectar con el servidor. Verifica tu conexión.');
-      }
-      throw error;
+  try {
+    const response = await fetch(`${import.meta.env.VITE_AUTH_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Credenciales incorrectas.");
     }
-  };
+
+    return await response.json();
+  } catch (error) {
+    if (error.message === "Failed to fetch") {
+      throw new Error("No se pudo conectar con el servidor. Verifica tu conexión.");
+    }
+    throw error;
+  }
+};
 
 export const handleMicrosoftLogin = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
+
   if (isMobile) {
     window.location.href = import.meta.env.VITE_MS_AUTH_URL;
     return;
@@ -54,15 +54,15 @@ export const handleMicrosoftLogin = () => {
 
       if (event.data.type === "oauth-status") {
         window.removeEventListener("message", handleMessage);
-      
+
         if (event.data.token && event.data.token !== "Failed") {
-          sessionStorage.setItem('authToken', event.data.token);
+          sessionStorage.setItem("authToken", event.data.token);
           popup.close();
           resolve(true);
         } else {
           reject(new Error("Error al iniciar sesión"));
         }
-      }      
+      }
     };
 
     window.addEventListener("message", handleMessage);
@@ -71,7 +71,7 @@ export const handleMicrosoftLogin = () => {
 
 export const handleGoogleLogin = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
+
   if (isMobile) {
     window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
     return;
@@ -97,22 +97,31 @@ export const handleGoogleLogin = () => {
       }
     }, 500);
 
-    const handleMessage = (event) => {
-      if (event.origin !== import.meta.env.VITE_FRONT_URL) return;
+    window.addEventListener("message", (event) => {
+      const { token, status } = event.data;
 
-      if (event.data.type === "oauth-status") {
-        window.removeEventListener("message", handleMessage);
+      console.log("Token recibido:", token);
+      console.log("Estado recibido:", status);
 
-        if (event.data.token === "Success") {
-          sessionStorage.setItem('authToken', event.data.token);
-          popup.close();
-          resolve(true);
-        } else {
-          reject(new Error("Error al iniciar sesión con Google."));
-        }
+      if (status === "Success") {
+        localStorage.setItem("token", token);
+
+        fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Usuario autenticado:", data.user);
+            resolve(true);
+          })
+          .catch((err) => {
+            console.error("Error al obtener el usuario:", err);
+          });
+      } else {
+        console.error("No autenticado");
       }
-    };
-
-    window.addEventListener("message", handleMessage);
+    });
   });
 };
