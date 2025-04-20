@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const MedicalRecordsS = require("../services/MedicalRecordsS.js");
+const MedicalApoimentsS = require("../services/MedicalAppointmentsS");
 
-router.get("/all", MedicalRecordsS.getRecords);
-router.get("/id/:id", MedicalRecordsS.getRecordsByID);
-router.get("/patient/:id", MedicalRecordsS.getRecordByPatient);
-router.get("/doctor/:id", MedicalRecordsS.getRecordByDoctort);
+router.get("/all", MedicalApoimentsS.getAppointments);
+router.get("/id/:id", MedicalApoimentsS.getAppoimentByID);
+router.get("/patient/:id", MedicalApoimentsS.getAppointmentByPatient);
+router.get("/doctor/:id", MedicalApoimentsS.getAppointmentByDoctor);
+
+router.post("/create", MedicalApoimentsS.createAppointment);
 
 module.exports = router;
