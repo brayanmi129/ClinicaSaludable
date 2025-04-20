@@ -45,6 +45,8 @@ const authRoutes = require("./routes/authRoutes");
 const doctorsRoutes = require("./routes/doctorsRoutes");
 const patientsRoutes = require("./routes/patientsRoutes");
 const medicalRecordsRoutes = require("./routes/medicalRecordsRoutes");
+const medicalAppointmentsRoutes = require("./routes/medicalAppointmentsRoutes");
+const laboratoriesRoutes = require("./routes/laboratoriesRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -55,6 +57,8 @@ app.use("/auth", authRoutes);
 app.use("/doctors", doctorsRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/medicalRecords", medicalRecordsRoutes);
+app.use("/medicalAppointments", medicalAppointmentsRoutes);
+app.use("/laboratories", laboratoriesRoutes);
 
 //enpoint para solicitudes no encontradas
 app.use((req, res) => {
