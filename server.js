@@ -58,7 +58,7 @@ app.use("/doctors", doctorsRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/medicalRecords", medicalRecordsRoutes);
 app.use("/medicalAppointments", medicalAppointmentsRoutes);
-app.use("/laboratories", laboratoriesRoutes);
+app.use("/labs", laboratoriesRoutes);
 
 //enpoint para solicitudes no encontradas
 app.use((req, res) => {

@@ -39,6 +39,20 @@ class MedicalRecordsM {
       throw error;
     }
   }
+
+  async getByDoctr(id) {
+    try {
+      const pool = await getConnection();
+      const result = await pool
+        .request()
+        .input("doctor_id", id)
+        .query("SELECT * FROM T_MedicalRecords WHERE doctor_id = @patient_id;");
+      return result.recordset;
+    } catch (error) {
+      console.error(`Error al obtener las HC del usuario ${id}:`, error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new MedicalRecordsM();

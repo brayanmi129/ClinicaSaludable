@@ -16,7 +16,7 @@ class LaboratoriesM {
       const result = await pool
         .request()
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.exam_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id;"
+          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id;"
         );
       return result.recordset;
     } catch (error) {
@@ -32,7 +32,7 @@ class LaboratoriesM {
         .request()
         .input("patient_id", sql.Int, id)
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.exam_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.lab_id = 10;"
+          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.lab_id = 10;"
         );
       return result.recordset[0];
     } catch (error) {
@@ -48,7 +48,7 @@ class LaboratoriesM {
         .request()
         .input("patient_id", sql.Int, id)
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.exam_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.patient_id  = @patient_id "
+          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.patient_id  = @patient_id "
         );
       return result.recordset;
     } catch (error) {

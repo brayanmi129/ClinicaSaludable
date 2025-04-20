@@ -5,5 +5,6 @@ const MedicalRecordsS = require("../services/MedicalRecordsS.js");
 router.get("/all", MedicalRecordsS.getRecords);
 router.get("/id/:id", MedicalRecordsS.getRecordsByID);
 router.get("/patient/:id", MedicalRecordsS.getRecordByPatient);
+router.get("/doctor/:id", MedicalRecordsS.getRecordByDoctort);
 
 module.exports = router;
