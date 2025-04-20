@@ -24,7 +24,9 @@ class UsersM {
       const result = await pool
         .request()
         .input("email", email)
-        .query("SELECT * FROM T_Users WHERE email = @email");
+        .query(
+          "SELECT user_id, first_name , last_name, address , phone,birth_date , email,blood_type ,role_name FROM T_Users WHERE email = @email"
+        );
 
       return result.recordset[0];
     } catch (error) {
@@ -39,7 +41,9 @@ class UsersM {
       const result = await pool
         .request()
         .input("user_id", id)
-        .query("SELECT * FROM T_Users WHERE user_id = @user_id");
+        .query(
+          "SELECT user_id, first_name , last_name, address , phone,birth_date , email,blood_type ,role_name FROM T_Users WHERE user_id = @user_id"
+        );
 
       return result.recordset[0];
     } catch (error) {
@@ -54,7 +58,9 @@ class UsersM {
       const result = await pool
         .request()
         .input("role_name", role)
-        .query("SELECT * FROM T_Users WHERE role_name = @role_name");
+        .query(
+          "SELECT user_id, first_name , last_name, address , phone,birth_date , email,blood_type ,role_name FROM T_Users WHERE role_name = @role_name"
+        );
 
       return result.recordset;
     } catch (error) {
@@ -64,6 +70,7 @@ class UsersM {
   }
 
   async updateUserById(user_id, updatedFields) {
+    updatedFields.password_hash = await bcrypt.hash(updatedFields.password_hash, 10);
     try {
       const allowedFields = [
         "first_name",
@@ -86,7 +93,6 @@ class UsersM {
           inputs.push({ name: field, value: updatedFields[field] });
         }
       }
-      console.log("Clausessss", setClauses, "Inputsssss", inputs);
 
       if (setClauses.length === 0) {
         throw new Error("No se proporcionaron campos para actualizar.");
