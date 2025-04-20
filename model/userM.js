@@ -70,7 +70,7 @@ class UsersM {
   }
 
   async updateUserById(user_id, updatedFields) {
-    updatedFields.password_hash = await bcrypt.hash(updatedFields.password_hash, 10);
+    updatedFields.password = await bcrypt.hash(updatedFields.password, 10);
     try {
       const allowedFields = [
         "first_name",
@@ -79,7 +79,7 @@ class UsersM {
         "phone",
         "birth_date",
         "email",
-        "password_hash",
+        "password",
         "blood_type",
         "role_name",
       ];
@@ -174,15 +174,15 @@ class UsersM {
       request.input("phone", sql.VarChar(20), phone);
       request.input("birth_date", sql.Date, birth_date);
       request.input("email", sql.VarChar(255), email);
-      request.input("password_hash", sql.Text, hashedPassword);
+      request.input("password", sql.Text, hashedPassword);
       request.input("blood_type", sql.VarChar(10), blood_type);
       request.input("role_name", sql.VarChar(20), role_name);
 
       const insertUserQuery = `
         INSERT INTO T_Users 
-        (first_name, last_name, address, phone, birth_date, email, password_hash, blood_type, role_name)
+        (first_name, last_name, address, phone, birth_date, email, password, blood_type, role_name)
         OUTPUT INSERTED.user_id
-        VALUES (@first_name, @last_name, @address, @phone, @birth_date, @email, @password_hash, @blood_type, @role_name)
+        VALUES (@first_name, @last_name, @address, @phone, @birth_date, @email, @password, @blood_type, @role_name)
       `;
 
       const result = await request.query(insertUserQuery);
@@ -208,7 +208,13 @@ class UsersM {
       await transaction.commit();
 
       console.log("Usuario Creado exitosamente", user_id, email, role_name);
-      return { user_id, email, role: role_name };
+      return {
+        success: true,
+        message: "Usuario creado exitosamente",
+        user_id,
+        email,
+        role_name,
+      };
     } catch (err) {
       console.error("Error al registrar:", err);
       throw new Error("Error al registrar usuario");

@@ -98,7 +98,7 @@ class UsersS {
     try {
       const result = await userM.registerUser(userData);
       if (result.success) {
-        res.status(200).json({ message: `Usuario ${id} eliminado exitosamente` });
+        res.status(200).json({ message: `Usuario ${result.user_id} creado exitosamente` });
       } else {
         res.status(404).json({ message: "Usuario no encontrado" });
       }
