@@ -100,11 +100,11 @@ class UsersS {
       if (result.success) {
         res.status(200).json({ message: `Usuario ${result.user_id} creado exitosamente` });
       } else {
-        res.status(404).json({ message: "Usuario no encontrado" });
+        res.status(404).json({ message: "Error al crear el usuario" });
       }
     } catch (e) {
       console.log(e);
-      res.status(500).json({ message: "Error en el servidor" });
+      res.status(500).json({ message: `Error en el servidor ${e}` });
     }
   }
 }

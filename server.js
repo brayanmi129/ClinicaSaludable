@@ -40,15 +40,21 @@ app.use(
 app.use(passport.initialize());
 // app.use(passport.session());
 
-const userRoutes = require("./routes/usersRoutes"); // Importa las rutas de usuarios
-const authRoutes = require("./routes/authRoutes"); // Importa las rutas de autenticación
+const userRoutes = require("./routes/usersRoutes");
+const authRoutes = require("./routes/authRoutes");
+const doctorsRoutes = require("./routes/doctorsRoutes");
+const patientsRoutes = require("./routes/patientsRoutes");
+const medicalRecordsRoutes = require("./routes/medicalRecordsRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use("/users", userRoutes); // Usa el router de usuarios en la ruta /api/users
-app.use("/auth", authRoutes); // Usa el router de autenticación en la ruta /api/auth
+app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/doctors", doctorsRoutes);
+app.use("/patients", patientsRoutes);
+app.use("/medicalRecords", medicalRecordsRoutes);
 
 //enpoint para solicitudes no encontradas
 app.use((req, res) => {
