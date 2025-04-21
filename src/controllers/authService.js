@@ -12,7 +12,27 @@ export const loginUser = async (email, password) => {
       throw new Error("Credenciales incorrectas.");
     }
 
-    return await response.json();
+    const { token } = await response.json();
+
+    if (!token) {
+      throw new Error("No se recibió un token de autenticación.");
+    }
+
+    sessionStorage.setItem("authToken", token);
+
+    const userResponse = await fetch(`${import.meta.env.VITE_AUTH_ME}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!userResponse.ok) {
+      throw new Error("Error al obtener los datos del usuario.");
+    }
+
+    const userData = await userResponse.json();
+    return userData;
+
   } catch (error) {
     if (error.message === "Failed to fetch") {
       throw new Error("No se pudo conectar con el servidor. Verifica tu conexión.");

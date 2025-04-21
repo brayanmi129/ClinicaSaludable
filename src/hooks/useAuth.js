@@ -21,7 +21,7 @@ export const useAuth = () => {
     }
 
     setIsLoading(true);
-    setErrorMessage('');
+    setErrorMessage(''); 
 
     try {
       const data = await loginUser(email, password);
