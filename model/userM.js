@@ -70,7 +70,9 @@ class UsersM {
   }
 
   async updateUserById(user_id, updatedFields) {
-    updatedFields.password = await bcrypt.hash(updatedFields.password, 10);
+    if (updatedFields.password) {
+      updatedFields.password = await bcrypt.hash(updatedFields.password, 10);
+    }
     try {
       const allowedFields = [
         "first_name",
