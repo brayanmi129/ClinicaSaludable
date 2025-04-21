@@ -100,7 +100,7 @@ class MedicalAppointmentsM {
 
       const pacient = await PatientsM.getById(data.patient_id);
       const to = pacient.email;
-      const name = pacient.firt_name;
+      const name = pacient.first_name;
       const date = data.appointment_date;
       const time = data.appointment_time;
       const emaildata = { to, date, time, name };

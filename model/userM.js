@@ -220,7 +220,10 @@ class UsersM {
       };
     } catch (err) {
       console.error("Error al registrar:", err);
-      throw new Error("Error al registrar usuario");
+      return{
+        success: false,
+        message: "Error al registrar el usuario",
+      }
     }
   }
 }
