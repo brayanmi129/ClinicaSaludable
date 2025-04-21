@@ -6,6 +6,7 @@ class AuthS {
   async OAuth(req, res) {
     try {
       const user = req.user;
+      console.log("Usuario autenticado:", user);
       if (!user) {
         console.log("No se encontró el usuario en la DB.");
         return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=fail&satus=fail`);

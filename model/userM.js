@@ -116,6 +116,7 @@ class UsersM {
       `;
 
       await request.query(updateQuery);
+
       return { message: "Usuario actualizado correctamente." };
     } catch (error) {
       console.error("Error al actualizar usuario:", error);

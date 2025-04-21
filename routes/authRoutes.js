@@ -34,6 +34,7 @@ router.get(
 router.get(
   "/microsoft/callback",
   passport.authenticate("microsoft", {
+    session: false,
     failureRedirect: `${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`,
   }),
   AuthS.OAuth
