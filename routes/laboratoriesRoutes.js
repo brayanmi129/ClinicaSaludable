@@ -21,5 +21,6 @@ router.get("/id/:id", LaboratoriesS.getLaboratoriesByID);
 router.get("/patient/:id", LaboratoriesS.getLaboratoriesByPatient);
 
 router.put("/update/:id", LaboratoriesS.updateLaboratories);
+router.delete("/delete/:id", LaboratoriesS.deleteLaboratories);
 
 module.exports = router;

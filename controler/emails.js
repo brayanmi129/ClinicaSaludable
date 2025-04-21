@@ -1,29 +1,30 @@
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 
-const sendEmail = async (emailDat) => {
-  const { to, date, time } = emailDat;
+const key = process.env.APY_KEY_EMAILS;
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "bmirandah@ucentral.edu.co",
-      pass: "Danger#09c",
-    },
-  });
+sgMail.setApiKey(key);
 
-  const mailOptions = {
+const sendEmail = async (emailData) => {
+  const { to, date, time } = emailData;
+
+  const msg = {
+    to, // destinatario
     from: "bmirandah@ucentral.edu.co",
-    to,
     subject: "Tu cita ha sido agendada",
     text: `Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.`,
     html: `<strong>Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.</strong>`,
   };
 
+  console.log("msg", msg);
+
   try {
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
+
     console.log("Correo enviado exitosamente");
+    return true;
   } catch (error) {
-    console.error("Error al enviar el correo:", error);
+    console.error("Error al enviar el correo:", error.response?.body || error.message);
+    return false;
   }
 };
 

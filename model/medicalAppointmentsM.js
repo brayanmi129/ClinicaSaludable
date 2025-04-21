@@ -1,6 +1,6 @@
 const { getConnection, sql } = require("../controler/db");
 const { sendEmail } = require("../controler/emails");
-const UserM = require("./UserM");
+const PatientsM = require("./patientsM");
 
 class MedicalAppointmentsM {
   async getAll() {
@@ -67,8 +67,6 @@ class MedicalAppointmentsM {
       status,
     } = data;
 
-    console.log("Data to create appointment:", data);
-
     const pool = await getConnection();
 
     try {
@@ -98,28 +96,30 @@ class MedicalAppointmentsM {
       `;
 
       const result = await request.query(insertQuery);
-      // const appointment_id = result.recordset[0].appointment_id;
+      const appointment_id = result.recordset[0].appointment_id;
 
-      // const pacient = await UserM.getById(data.patient_id);
-      // const to = pacient.email;
-      // const date = data.appointment_date;
-      // const time = data.appointment_time;
-      // const emaildata = { to, date, time };
+      const pacient = await PatientsM.getById(data.patient_id);
+      const to = pacient.email;
+      const date = data.appointment_date;
+      const time = data.appointment_time;
+      const emaildata = { to, date, time };
 
-      // const emailresult = await sendEmail(emaildata);
+      const emailresult = await sendEmail(emaildata);
+      console.log(emailresult);
 
-      // if (emailresult.error) {
-      //   // return {
-      //   //   success: true,
-      //   //   message: "Cita médica creada exitosamente",
-      //   //   appointment_id,
-      //   // };
-      // }
-      return {
-        success: true,
-        message: "Cita médica creada exitosamente",
-        appointment_id,
-      };
+      if (emailresult) {
+        return {
+          success: true,
+          message: "Cita médica creada exitosamente",
+          appointment_id,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Cita médica creada exitosamente peor error en al enviar el correo",
+          appointment_id,
+        };
+      }
     } catch (err) {
       console.error("Error al crear la cita médica:", err);
       throw new Error("No se pudo crear la cita médica");

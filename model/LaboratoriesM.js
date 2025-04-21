@@ -58,7 +58,7 @@ class LaboratoriesM {
   }
 
   async upload(data, file) {
-    const { labName, labDate, patient_id, doctor_id } = data;
+    const { lab_Name, lab_Date, patient_id, doctor_id } = data;
     const user = await UserM.getById(patient_id);
     const { email } = user;
     try {
@@ -74,8 +74,8 @@ class LaboratoriesM {
       const pool = await getConnection();
       await pool
         .request()
-        .input("labName", sql.VarChar, labName)
-        .input("labDate", sql.Date, labDate)
+        .input("labName", sql.VarChar, lab_Name)
+        .input("labDate", sql.Date, lab_Date)
         .input("fileLink", sql.Text, file_link)
         .input("patientId", sql.Int, patient_id)
         .input("doctorId", sql.Int, doctor_id)
