@@ -54,7 +54,50 @@ class MedicalRecordsS {
 
       res.status(200).json(result);
     } catch (error) {
-      console.error("Error al obtener usuario:", error);
+      console.error("Error al obtener hc:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
+
+  async createRecord(req, res) {
+    const data = req.body;
+    try {
+      const result = await medicalRecordsM.create(data);
+      res.status(201).json(result);
+    } catch (error) {
+      console.error("Error al crear la HC:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
+
+  async updateRecord(req, res) {
+    const { id } = req.params;
+    const data = req.body;
+    try {
+      const result = await medicalRecordsM.update(id, data);
+
+      if (!result) {
+        return res.status(404).json({ message: "HC no encontrado" });
+      }
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error al actualizar la HC:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
+  async deleteRecord(req, res) {
+    const { id } = req.params;
+    try {
+      const result = await medicalRecordsM.delete(id);
+
+      if (!result) {
+        return res.status(404).json({ message: "HC no encontrado" });
+      }
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error al eliminar la HC:", error);
       res.status(500).json({ message: "Error en el servidor" });
     }
   }

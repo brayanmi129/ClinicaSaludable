@@ -54,6 +54,38 @@ class MedicalRecordsS {
       throw error;
     }
   }
+
+  async updateLaboratories(req, res) {
+    const { id } = req.params;
+    const data = req.body;
+    try {
+      const result = await LaboratoriesM.update(id, data);
+
+      if (!result) {
+        return res.status(404).json({ message: "Laboratorio no encontrado" });
+      }
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error al obtener usuario:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
+  async deleteLaboratories(req, res) {
+    const { id } = req.params;
+    try {
+      const result = await LaboratoriesM.delete(id);
+
+      if (!result) {
+        return res.status(404).json({ message: "Laboratorio no encontrado" });
+      }
+
+      res.status(200).json({ message: "Laboratorio eliminado" });
+    } catch (error) {
+      console.error("Error al obtener usuario:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
 }
 
 module.exports = new MedicalRecordsS();

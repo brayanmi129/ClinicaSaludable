@@ -5,7 +5,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
-  "/upload",
+  "/create",
   upload.single("file"),
   (req, res, next) => {
     if (!req.file) {
@@ -19,5 +19,7 @@ router.post(
 router.get("/all", LaboratoriesS.getLaboratories);
 router.get("/id/:id", LaboratoriesS.getLaboratoriesByID);
 router.get("/patient/:id", LaboratoriesS.getLaboratoriesByPatient);
+
+router.put("/update/:id", LaboratoriesS.updateLaboratories);
 
 module.exports = router;

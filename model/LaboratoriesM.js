@@ -90,6 +90,72 @@ class LaboratoriesM {
       throw error;
     }
   }
+  async update(lab_id, updatedFields) {
+    try {
+      const allowedFields = [
+        "lab_name",
+        "lab_date",
+        "file_link",
+        "patient_id", // normalmente no se cambia
+        "doctor_id", // podría cambiarse si es necesario
+        "exam_date",
+      ];
+
+      const setClauses = [];
+      const inputs = [];
+
+      for (const field of allowedFields) {
+        if (updatedFields[field] !== undefined) {
+          setClauses.push(`${field} = @${field}`);
+          inputs.push({ name: field, value: updatedFields[field] });
+        }
+      }
+
+      if (setClauses.length === 0) {
+        throw new Error("No se proporcionaron campos para actualizar.");
+      }
+
+      const pool = await getConnection();
+      const request = pool.request();
+
+      inputs.forEach(({ name, value }) => {
+        request.input(name, value);
+      });
+
+      request.input("lab_id", lab_id);
+
+      const updateQuery = `
+        UPDATE T_Laboratories
+        SET ${setClauses.join(", ")}
+        WHERE lab_id = @lab_id
+      `;
+
+      await request.query(updateQuery);
+
+      return { message: "Laboratorio actualizado correctamente." };
+    } catch (error) {
+      console.error("Error al actualizar laboratorio:", error);
+      throw error;
+    }
+  }
+  async delete(lab_id) {
+    try {
+      const pool = await getConnection();
+      const result = await pool
+        .request()
+        .input("lab_id", sql.Int, lab_id)
+        .query("DELETE FROM T_Laboratories WHERE lab_id = @lab_id;");
+
+      if (result.rowsAffected[0] === 0) {
+        return null; // No se encontró el laboratorio
+      }
+
+      return { message: "Laboratorio eliminado correctamente." };
+    } catch (error) {
+      console.error("Error al eliminar laboratorio:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new LaboratoriesM();

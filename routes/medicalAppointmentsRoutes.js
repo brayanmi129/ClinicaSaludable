@@ -8,5 +8,6 @@ router.get("/patient/:id", MedicalApoimentsS.getAppointmentByPatient);
 router.get("/doctor/:id", MedicalApoimentsS.getAppointmentByDoctor);
 
 router.post("/create", MedicalApoimentsS.createAppointment);
+router.put("/update/:id", MedicalApoimentsS.updateAppointment);
 
 module.exports = router;

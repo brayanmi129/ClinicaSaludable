@@ -6,14 +6,14 @@ const sendEmail = async (emailDat) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "bmirandah@ucentral.edu.co", // Tu correo de Gmail
-      pass: "Danger#09c", // Si usas autenticación de 2 pasos, necesitarás una contraseña de aplicación
+      user: "bmirandah@ucentral.edu.co",
+      pass: "Danger#09c",
     },
   });
 
   const mailOptions = {
-    from: "tu-correo@gmail.com", // Tu correo de Gmail
-    to, // Correo del destinatario
+    from: "bmirandah@ucentral.edu.co",
+    to,
     subject: "Tu cita ha sido agendada",
     text: `Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.`,
     html: `<strong>Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.</strong>`,
