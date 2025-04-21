@@ -46,7 +46,7 @@ class DoctorsS {
     const { id } = req.params;
     const updatedFields = req.body;
     try {
-      const result = await DoctorsM.update(id, updatedFields);
+      const result = await doctorsM.update(id, updatedFields);
 
       if (!result) {
         return res.status(404).json({ message: "Usuario no encontrado" });

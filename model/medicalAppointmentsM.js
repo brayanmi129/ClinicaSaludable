@@ -35,10 +35,10 @@ class MedicalAppointmentsM {
         .request()
         .input("patient_id", id)
         .query("SELECT * FROM T_MedicalAppointments WHERE patient_id = @patient_id;");
-      return result.Appointmentset;
+      return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las HC del usuario ${id}:`, error);
-      throw error;
+      return error;
     }
   }
 
@@ -49,7 +49,7 @@ class MedicalAppointmentsM {
         .request()
         .input("doctor_id", id)
         .query("SELECT * FROM T_MedicalAppointments WHERE doctor_id = @doctor_id;");
-      return result.Appointmentset;
+      return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las las citas del usuario ${id}:`, error);
       throw error;
@@ -123,7 +123,10 @@ class MedicalAppointmentsM {
       }
     } catch (err) {
       console.error("Error al crear la cita médica:", err);
-      throw new Error("No se pudo crear la cita médica");
+      return {
+        success: false,
+        message: "Error al crear la cita médica",
+      };
     }
   }
   async update(appointment_id, updatedFields) {
