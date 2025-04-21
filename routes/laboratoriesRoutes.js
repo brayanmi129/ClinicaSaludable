@@ -3,9 +3,11 @@ const router = express.Router();
 const LaboratoriesS = require("../services/LaboratoriesS.js");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+const verifyJWT = require("../middlewares/verifyJWT");
 
 router.post(
   "/create",
+  verifyJWT,
   upload.single("file"),
   (req, res, next) => {
     if (!req.file) {
@@ -16,11 +18,11 @@ router.post(
   LaboratoriesS.uploadLaboratorie
 );
 
-router.get("/all", LaboratoriesS.getLaboratories);
-router.get("/id/:id", LaboratoriesS.getLaboratoriesByID);
-router.get("/patient/:id", LaboratoriesS.getLaboratoriesByPatient);
+router.get("/all", verifyJWT, LaboratoriesS.getLaboratories);
+router.get("/id/:id", verifyJWT, LaboratoriesS.getLaboratoriesByID);
+router.get("/patient/:id", verifyJWT, LaboratoriesS.getLaboratoriesByPatient);
 
-router.put("/update/:id", LaboratoriesS.updateLaboratories);
-router.delete("/delete/:id", LaboratoriesS.deleteLaboratories);
+router.put("/update/:id", verifyJWT, LaboratoriesS.updateLaboratories);
+router.delete("/delete/:id", verifyJWT, LaboratoriesS.deleteLaboratories);
 
 module.exports = router;

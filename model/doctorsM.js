@@ -51,6 +51,46 @@ class DoctorsM {
       throw error;
     }
   }
+  async update(doctor_id, updatedFields) {
+    try {
+      const allowedFields = ["specialty"];
+
+      const setClauses = [];
+      const inputs = [];
+
+      for (const field of allowedFields) {
+        if (field in updatedFields) {
+          setClauses.push(`${field} = @${field}`);
+          inputs.push({ name: field, value: updatedFields[field] });
+        }
+      }
+
+      if (setClauses.length === 0) {
+        throw new Error("No se proporcionaron campos para actualizar.");
+      }
+
+      const pool = await getConnection();
+      const request = pool.request();
+
+      inputs.forEach(({ name, value }) => {
+        request.input(name, value);
+      });
+
+      request.input("doctor_id", doctor_id);
+
+      const updateQuery = `
+        UPDATE T_Doctors
+        SET ${setClauses.join(", ")}
+        WHERE doctor_id = @doctor_id
+      `;
+
+      await request.query(updateQuery);
+      return { message: "Doctor actualizado correctamente." };
+    } catch (error) {
+      console.error("Error al actualizar doctor:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new DoctorsM();

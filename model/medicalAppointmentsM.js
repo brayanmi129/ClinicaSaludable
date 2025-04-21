@@ -100,9 +100,10 @@ class MedicalAppointmentsM {
 
       const pacient = await PatientsM.getById(data.patient_id);
       const to = pacient.email;
+      const name = pacient.firt_name;
       const date = data.appointment_date;
       const time = data.appointment_time;
-      const emaildata = { to, date, time };
+      const emaildata = { to, date, time, name };
 
       const emailresult = await sendEmail(emaildata);
       console.log(emailresult);

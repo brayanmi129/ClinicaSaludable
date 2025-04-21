@@ -5,14 +5,14 @@ const key = process.env.APY_KEY_EMAILS;
 sgMail.setApiKey(key);
 
 const sendEmail = async (emailData) => {
-  const { to, date, time } = emailData;
+  const { to, date, time, name } = emailData;
 
   const msg = {
     to, // destinatario
     from: "bmirandah@ucentral.edu.co",
     subject: "Tu cita ha sido agendada",
-    text: `Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.`,
-    html: `<strong>Hola ${to}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time}.</strong>`,
+    text: `Hola ${name}, tu cita medica con clinica norte ha sido agendada para la fecha: ${date} a la hora: ${time} Gracias por confiar en nosotros.`,
+    html: `<strong> Hola ${name}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time} Gracias por confiar en nosotros.</strong>`,
   };
 
   console.log("msg", msg);

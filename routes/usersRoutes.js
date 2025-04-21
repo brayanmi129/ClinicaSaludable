@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const UsersS = require("../services/userS.js");
+const verifyJWT = require("../middlewares/verifyJWT");
 
-router.get("/all", UsersS.getUsers);
-router.get("/id/:id", UsersS.getUsersByID);
-router.get("/email/:email", UsersS.getUsersByEmail);
-router.get("/role/:role", UsersS.getUsersByRole);
-router.put("/update/:id", UsersS.updateUserById);
-router.delete("/delete/:id", UsersS.deleteUserById);
-router.post("/register", UsersS.registrerUser);
+router.get("/all", verifyJWT, UsersS.getUsers);
+router.get("/id/:id", verifyJWT, UsersS.getUsersByID);
+router.get("/email/:email", verifyJWT, UsersS.getUsersByEmail);
+router.get("/role/:role", verifyJWT, UsersS.getUsersByRole);
+router.put("/update/:id", verifyJWT, UsersS.updateUserById);
+router.delete("/delete/:id", verifyJWT, UsersS.deleteUserById);
+router.post("/register", verifyJWT, UsersS.registrerUser);
 
 module.exports = router;

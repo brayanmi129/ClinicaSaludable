@@ -63,7 +63,7 @@ class MedicalRecordsM {
       const result = await pool
         .request()
         .input("patient_id", patient_id)
-        .input("doctor_id", doctor_id || null) // doctor_id puede ser null
+        .input("doctor_id", doctor_id)
         .input("diagnosis_date", diagnosis_date)
         .input("observations", observations)
         .input("incapacidad", incapacidad || null) // incapacidad puede ser null

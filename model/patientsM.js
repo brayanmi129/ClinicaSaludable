@@ -51,6 +51,47 @@ class PatientsM {
       throw error;
     }
   }
+
+  async update(patient_id, updatedFields) {
+    try {
+      const allowedFields = ["health_insurance", "allergies"];
+
+      const setClauses = [];
+      const inputs = [];
+
+      for (const field of allowedFields) {
+        if (field in updatedFields) {
+          setClauses.push(`${field} = @${field}`);
+          inputs.push({ name: field, value: updatedFields[field] });
+        }
+      }
+
+      if (setClauses.length === 0) {
+        throw new Error("No se proporcionaron campos para actualizar.");
+      }
+
+      const pool = await getConnection();
+      const request = pool.request();
+
+      inputs.forEach(({ name, value }) => {
+        request.input(name, value);
+      });
+
+      request.input("patient_id", patient_id);
+
+      const updateQuery = `
+        UPDATE T_Patients
+        SET ${setClauses.join(", ")}
+        WHERE patient_id = @patient_id
+      `;
+
+      await request.query(updateQuery);
+      return { message: "Paciente actualizado correctamente." };
+    } catch (error) {
+      console.error("Error al actualizar paciente:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new PatientsM();
