@@ -1,4 +1,6 @@
 const { getConnection, sql } = require("../controler/db");
+const { sendEmail } = require("../controler/emails");
+const UserM = require("./UserM");
 
 class MedicalAppointmentsM {
   async getAll() {
@@ -19,7 +21,7 @@ class MedicalAppointmentsM {
         .request()
         .input("appointment_id", id)
         .query("SELECT * FROM T_MedicalAppointments WHERE appointment_id = @appointment_id;");
-      return result.Appointmentset[0];
+      return result.recordsets[0];
     } catch (error) {
       console.error("Error al obtener usuario por email:", error);
       throw error;
@@ -65,6 +67,8 @@ class MedicalAppointmentsM {
       status,
     } = data;
 
+    console.log("Data to create appointment:", data);
+
     const pool = await getConnection();
 
     try {
@@ -74,7 +78,15 @@ class MedicalAppointmentsM {
       request.input("doctor_id", sql.Int, doctor_id);
       request.input("appointment_type", sql.VarChar(100), appointment_type || null);
       request.input("appointment_date", sql.Date, appointment_date);
-      request.input("appointment_time", sql.Time, appointment_time);
+      // Crea un objeto Date usando solo la parte de la hora
+      const [hours, minutes, seconds] = appointment_time.split(":");
+      const appointmentTimeDate = new Date();
+      appointmentTimeDate.setHours(Number(hours));
+      appointmentTimeDate.setMinutes(Number(minutes));
+      appointmentTimeDate.setSeconds(Number(seconds));
+
+      // Y pásalo como Date, no como string
+      request.input("appointment_time", sql.Time, appointmentTimeDate);
       request.input("location", sql.Text, location || null);
       request.input("status", sql.VarChar(20), status);
 
@@ -88,11 +100,21 @@ class MedicalAppointmentsM {
       const result = await request.query(insertQuery);
       const appointment_id = result.recordset[0].appointment_id;
 
-      return {
-        success: true,
-        message: "Cita médica creada exitosamente",
-        appointment_id,
-      };
+      const pacient = await UserM.getById(data.patient_id);
+      const to = pacient.email;
+      const date = data.appointment_date;
+      const time = data.appointment_time;
+      const emaildata = { to, date, time };
+
+      const emailresult = await sendEmail(emaildata);
+
+      if (emailresult.error) {
+        return {
+          success: true,
+          message: "Cita médica creada exitosamente",
+          appointment_id,
+        };
+      }
     } catch (err) {
       console.error("Error al crear la cita médica:", err);
       throw new Error("No se pudo crear la cita médica");
