@@ -12,7 +12,14 @@ const sendEmail = async (emailData) => {
     from: "bmirandah@ucentral.edu.co",
     subject: "Tu cita ha sido agendada",
     text: `Hola ${name}, tu cita medica con clinica norte ha sido agendada para la fecha: ${date} a la hora: ${time} Gracias por confiar en nosotros.`,
-    html: `<strong> Hola ${name}, tu cita ha sido agendada para la fecha: ${date} a la hora: ${time} Gracias por confiar en nosotros.</strong>`,
+    html: `<strong>
+  Hola ${name},<br><br>
+  Tu cita ha sido <u>agendada</u> para la siguiente fecha:<br><br>
+  📅 <b>Fecha:</b> ${date}<br>
+  🕒 <b>Hora:</b> ${time}<br><br>
+  ¡Gracias por confiar en nosotros!<br>
+  💙
+</strong>`,
   };
 
   console.log("msg", msg);
