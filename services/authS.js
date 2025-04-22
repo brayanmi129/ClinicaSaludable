@@ -9,7 +9,7 @@ class AuthS {
       console.log("Usuario autenticado:", user);
       if (!user) {
         console.log("No se encontró el usuario en la DB.");
-        return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=fail&satus=fail`);
+        return res.redirect(`${process.env.URL_FRONT}/?token=none`);
       }
 
       const payload = {
@@ -22,29 +22,29 @@ class AuthS {
       });
 
       console.log("Token generado:", token);
+      return res.redirect(`${process.env.URL_FRONT}/?token=${token}`);
+      // return res.send(`
+      //   <html>
+      //     <head>
+      //       <title>OAuth Success</title>
+      //       <script>
+      //         const token = "${token}";
+      //         window.opener.postMessage({ token, status: "Success" }, "http://localhost:5173");
+      //         window.opener.postMessage({ token, status: "Success" }, "https://clinica-norte.azurewebsites.net");
 
-      return res.send(`
-        <html>
-          <head>
-            <title>OAuth Success</title>
-            <script>
-              const token = "${token}";
-              window.opener.postMessage({ token, status: "Success" }, "http://localhost:5173");
-              window.opener.postMessage({ token, status: "Success" }, "https://clinica-norte.azurewebsites.net");
+      //         console.log("Token recibido:", token);
 
-              console.log("Token recibido:", token);
+      //         setTimeout(() => {
+      //           window.close();
+      //         }, 500);
+      //       </script>
+      //     </head>
+      //     <body>
+      //       <p>Autenticando...</p>
+      //     </body>
 
-              setTimeout(() => {
-                window.close();
-              }, 500);
-            </script>
-          </head>
-          <body>
-            <p>Autenticando...</p>
-          </body>
-          
-        </html>
-      `);
+      //   </html>
+      // `);
     } catch (error) {
       return res.redirect(`${process.env.URL_BACKEND}/oauth-popup.html?token=fail&satus=fail`);
     }
