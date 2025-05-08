@@ -9,10 +9,8 @@ import {
   ClipboardList,
   X,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 
 const Home = () => {
-  const { logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
