@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Auth = require("../model/AuthM.js");
+const User = require("../model/UserM.js");
 
 class AuthS {
   async OAuth(req, res) {
@@ -88,6 +89,18 @@ class AuthS {
         res.json({ message: "Sesión cerrada correctamente" });
       });
     });
+  }
+
+  async me(req, res) {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    } else {
+      const id = req.user.id;
+      console.log("ID", id);
+      const userinfo = await User.getById(id);
+      console.log("UserInfo", userinfo);
+      res.json(userinfo);
+    }
   }
 }
 

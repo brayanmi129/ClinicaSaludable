@@ -40,8 +40,6 @@ router.get(
   AuthS.OAuth
 );
 
-router.get("/me", verifyJWT, (req, res) => {
-  res.json({ user: req.user });
-});
+router.get("/me", verifyJWT, AuthS.me);
 
 module.exports = router;
