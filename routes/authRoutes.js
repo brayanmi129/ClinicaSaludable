@@ -18,7 +18,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: `${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`,
+    failureRedirect: `${process.env.URL_FRONT}/?token=Fail`,
   }),
   AuthS.OAuth
 );
@@ -35,7 +35,7 @@ router.get(
   "/microsoft/callback",
   passport.authenticate("microsoft", {
     session: false,
-    failureRedirect: `${process.env.URL_BACKEND}/oauth-popup.html?token=Fail`,
+    failureRedirect: `${process.env.URL_FRONT}/?token=Fail`,
   }),
   AuthS.OAuth
 );
