@@ -3,14 +3,11 @@ import GoogleLogo from '../assets/logo-google.png';
 import MSLogo from '../assets/logo-ms.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginWithEmailPassword } from '../utils/auth';
-
-const Spinner = () => (
-  <svg className="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-  </svg>
-);
+import { useEffect } from 'react';
+import { loginWithEmailPassword, redirectToGoogleAuth, completeOAuthLogin } from '../utils/auth';
+import FormInput from '../components/FormInput';
+import PrimaryButton from '../components/Button';
+import Logotype from '../components/Logo';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -19,52 +16,39 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        completeOAuthLogin(navigate, setIsLoading, setErrorMessage);
+    }, []);
+
     const handleLogin = async () => {
         if (!email || !password) {
-          setErrorMessage("Por favor, completa todos los campos.");
-          return;
+            setErrorMessage("Por favor, completa todos los campos.");
+            return;
         }
       
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-          setErrorMessage("Correo no válido.");
-          return;
+            setErrorMessage("Correo no válido.");
+            return;
         }
       
         setIsLoading(true);
         setErrorMessage("");
       
         try {
-          const user = await loginWithEmailPassword(email, password);
-          navigate("/home");
+            const user = await loginWithEmailPassword(email, password);
+            navigate("/home");
         } catch (error) {
-          setErrorMessage(error.message || "Error al iniciar sesión.");
+            setErrorMessage(error.message || "Error al iniciar sesión.");
         } finally {
-          setIsLoading(false);
+            setIsLoading(false);
         }
-      };      
+    };      
 
     return (
         <div className="h-full w-full flex items-center justify-center">
             <div className="bg-blue-600 h-full w-3/7 p-20 hidden flex-col box-border lg:display-block lg:flex lg:items-center lg:justify-center lg:w-3/7 lg:h-screen">
-                <div className="w-full h-1/15 flex items-center">
-                    <div className="min-h-full max-h-full pr-5 flex items-center justify-center w-6 sm:w-8 md:w-20 aspect-square overflow-hidden">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="white"
-                            className="w-full h-full"
-                        >
-                        <path fillRule="evenodd" d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div
-                        className="whitespace-nowrap w-full text-[1.5em] sm:text-xl md:text-2xl font-bold h-full flex items-center text-sky-50 px-5 border-l-2 border-sky-50"
-                        style={{ fontFamily: 'Nunito, sans-serif' }}
-                    >
-                        <h3>Clínica del Norte</h3>
-                    </div>
-                </div>
+                <Logotype text="Clínica del Norte" />
                 <div className='h-full flex flex-col justify-around'>
                     <div className="w-full h-7/15 flex items-center justify-center">
                         <img src={Logo} alt=""/>
@@ -99,52 +83,14 @@ const Login = () => {
                             <p>Ingresa a tu cuenta para programar citas, descargar resultados y más.</p>
                         </div>
                         <div>
-                            <div className="relative w-full mb-5">
-                                <input
-                                    name="email"
-                                    type="text"
-                                    id="email"
-                                    placeholder=" "
-                                    className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2.5 text-[1.2em] bg-white
-                                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <label htmlFor="email" className="absolute left-3 px-1 text-gray-500 text-sm bg-white z-10 transition-all
-                                peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
-                                peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
-                                peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-blue-50">
-                                Correo electrónico
-                                </label>
-                            </div>
-                            <div className="relative w-full mb-5">
-                                <input
-                                name="password"
-                                type="password"
-                                id="password"
-                                placeholder=" "
-                                className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2.5 text-[1.2em] bg-white
-                                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                onChange={(e) => setPassword(e.target.value)}
-                                />
-                                <label htmlFor="password" className="absolute left-3 px-1 text-gray-500 text-sm bg-white z-10 transition-all
-                                peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
-                                peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
-                                peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-blue-50">
-                                Contraseña
-                                </label>
-                            </div>
+                            <FormInput id='email' label='Correo electrónico' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                            <FormInput id='password' label='Contraseña' type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                             <div className='text-red-500 text-[1em] font-semibold'>
                                 <p>{errorMessage}</p>
                             </div>
-                            <button
-                                type="submit"
-                                className="cursor-pointer w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white text-[1.1em] font-semibold py-3 rounded-md shadow-md transition duration-300 ease-in-out
-                                focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 disabled:opacity-60 flex items-center justify-center"
-                                onClick={handleLogin}
-                                disabled={isLoading}
-                                >
-                                {isLoading ? (<><Spinner /> Cargando...</>) : 'Iniciar sesión'}
-                            </button>
+                            <PrimaryButton onClick={handleLogin} isLoading={isLoading} variant="primary">
+                                Iniciar sesión
+                            </PrimaryButton>
                         </div>
                         <div className="flex items-center gap-4 my-6">
                             <hr className="flex-grow border-t border-gray-300" />
@@ -153,7 +99,7 @@ const Login = () => {
                         </div>
                         <div className='flex flex-col w-full justify-around text-[1.2em]'>
                             <div className='w-full h-[70px] mb-5'>
-                                <button className="cursor-pointer flex items-center justify-center w-full h-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition">
+                                <button className="cursor-pointer flex items-center justify-center w-full h-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition" onClick={redirectToGoogleAuth}>
                                     <img src={GoogleLogo} alt="Google" className="w-10 h-10" />
                                     <span className="text-gray-700">Ingresa con Google</span>
                                 </button>
@@ -175,6 +121,6 @@ const Login = () => {
             </div>
         </div>
     );
-    };
+};
 
 export default Login;
