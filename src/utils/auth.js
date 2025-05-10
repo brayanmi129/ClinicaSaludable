@@ -75,8 +75,9 @@ export const completeOAuthLogin = async (navigate, setLoading, setError) => {
       setLoading(true);
       sessionStorage.setItem("authToken", token);
       window.history.replaceState({}, document.title, window.location.pathname);
-      const userData = await getUserDataFromToken(token);
-      sessionStorage.setItem("userData", JSON.stringify(userData.user));
+      getUserDataFromToken(token).then((userData) => {
+        sessionStorage.setItem("userData", JSON.stringify(userData));
+      });
       navigate("/home");
     } catch (error) {
       setError(error.message || "Hubo un problema al validar tu sesión.");
