@@ -1,22 +1,19 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './layouts/Dashboard';
+import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route 
-          path="/home" 
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } 
-        />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
       </Routes>
     </Router>
   );
