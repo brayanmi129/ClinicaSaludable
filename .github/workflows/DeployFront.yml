@@ -26,8 +26,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Copy Webconfig
-        run: cp web.config dist/web.config
+      #- name: Copy Webconfig
+      #  run: cp web.config dist/web.config
 
       - name: Login en Azure
         uses: azure/login@v1
