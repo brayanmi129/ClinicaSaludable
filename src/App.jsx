@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layouts/Dashboard';
-import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import Settings from './pages/Settings';
 
 const App = () => {
@@ -14,14 +14,15 @@ const App = () => {
 
         {/* Rutas protegidas */}
         <Route 
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <DashboardLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Home />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </Router>

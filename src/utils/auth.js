@@ -16,7 +16,7 @@ export const loginWithEmailPassword = async (email, password) => {
         }
         sessionStorage.setItem("authToken", token);
         getUserDataFromToken(token).then((userData) => {
-          sessionStorage.setItem("userData", JSON.stringify(userData.user));
+          sessionStorage.setItem("userData", JSON.stringify(userData));
         });
         return token;
       case 401:

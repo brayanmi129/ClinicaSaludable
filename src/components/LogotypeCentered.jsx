@@ -1,6 +1,9 @@
-const LogotypeCentered = ({ text = 'Text', isMobile }) => {    
+import { useNavigate } from "react-router-dom";
+
+const LogotypeCentered = ({ text = 'Text' }) => {    
+    const navigate = useNavigate();
     return (
-        <div className="w-full h-1/15 flex items-center justify-center sm:display">
+        <div className="cursor-pointer w-full h-1/15 flex items-center justify-center sm:display" onClick={() => navigate('/dashboard')}>
             <div className="min-h-full max-h-full flex items-center justify-center sm:w-15 lg:w-10 xl:w-12 aspect-square overflow-hidden">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
