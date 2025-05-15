@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 export const loginWithEmailPassword = async (email, password) => {
   try {
     const response = await fetch(import.meta.env.VITE_AUTH_URL, {

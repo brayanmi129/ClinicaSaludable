@@ -37,7 +37,7 @@ const Login = () => {
       
         try {
             const user = await loginWithEmailPassword(email, password);
-            navigate("/home");
+            navigate("/dashboard");
         } catch (error) {
             setErrorMessage(error.message || "Error al iniciar sesión.");
         } finally {
