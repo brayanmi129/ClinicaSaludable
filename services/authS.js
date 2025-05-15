@@ -24,28 +24,6 @@ class AuthS {
 
       console.log("Token generado:", token);
       return res.redirect(`${process.env.URL_FRONT}/?token=${token}`);
-      // return res.send(`
-      //   <html>
-      //     <head>
-      //       <title>OAuth Success</title>
-      //       <script>
-      //         const token = "${token}";
-      //         window.opener.postMessage({ token, status: "Success" }, "http://localhost:5173");
-      //         window.opener.postMessage({ token, status: "Success" }, "https://clinica-norte.azurewebsites.net");
-
-      //         console.log("Token recibido:", token);
-
-      //         setTimeout(() => {
-      //           window.close();
-      //         }, 500);
-      //       </script>
-      //     </head>
-      //     <body>
-      //       <p>Autenticando...</p>
-      //     </body>
-
-      //   </html>
-      // `);
     } catch (error) {
       return res.redirect(`${process.env.URL_FRONT}/?token=fail`);
     }
@@ -92,6 +70,7 @@ class AuthS {
   }
 
   async me(req, res) {
+    console.log("Me", req.user);
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     } else {

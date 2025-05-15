@@ -8,7 +8,7 @@ class PatientsM {
       const result = await pool
         .request()
         .query(
-          "SELECT u.user_id, p.patient_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id;"
+          "SELECT u.user_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies , p.blood_type FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id;"
         );
       return result.recordset;
     } catch (error) {
@@ -25,7 +25,7 @@ class PatientsM {
         .request()
         .input("email", email)
         .query(
-          "SELECT u.user_id, p.patient_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id WHERE u.email = @email;"
+          "SELECT u.user_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies p.blood_type, FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id WHERE u.email = @email;"
         );
 
       return result.recordset[0];
@@ -42,7 +42,7 @@ class PatientsM {
         .request()
         .input("PatientId", id)
         .query(
-          "SELECT u.user_id, p.patient_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id WHERE p.patient_id = @PatientId;"
+          "SELECT u.user_id, p.patient_id, u.first_name, u.last_name, u.email, p.health_insurance, p.allergies, p.blood_type FROM T_Users u INNER JOIN T_Patients p ON u.user_id = p.user_id WHERE p.patient_id = @PatientId;"
         );
 
       return result.recordset[0];
@@ -54,7 +54,7 @@ class PatientsM {
 
   async update(patient_id, updatedFields) {
     try {
-      const allowedFields = ["health_insurance", "allergies"];
+      const allowedFields = ["health_insurance", "allergies", "blood_type"];
 
       const setClauses = [];
       const inputs = [];

@@ -8,7 +8,7 @@ class DoctorsM {
       const result = await pool
         .request()
         .query(
-          "SELECT u.user_id, d.doctor_id, u.first_name, u.last_name, u.email, d.specialty FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id;"
+          "SELECT u.user_id, u.first_name, u.last_name, u.email, d.specialty , d.blood_type FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id;"
         );
       return result.recordset;
     } catch (error) {
@@ -25,7 +25,7 @@ class DoctorsM {
         .request()
         .input("email", email)
         .query(
-          "SELECT u.user_id, d.doctor_id, u.first_name, u.last_name, u.email, d.specialty FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id WHERE u.email = @email;"
+          "SELECT u.user_id, u.first_name, u.last_name, u.email, d.specialty d.blood_type FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id WHERE u.email = @email;"
         );
 
       return result.recordset[0];
@@ -42,7 +42,7 @@ class DoctorsM {
         .request()
         .input("DoctorId", id)
         .query(
-          "SELECT u.user_id, d.doctor_id, u.first_name, u.last_name, u.email, d.specialty FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id WHERE d.doctor_id = @DoctorId"
+          "SELECT u.user_id, u.first_name, u.last_name, u.email, d.specialty , d.blood_type FROM T_Users u INNER JOIN T_Doctors d ON u.user_id = d.user_id WHERE d.doctor_id = @DoctorId"
         );
 
       return result.recordset[0];
@@ -53,7 +53,7 @@ class DoctorsM {
   }
   async update(doctor_id, updatedFields) {
     try {
-      const allowedFields = ["specialty"];
+      const allowedFields = ["specialty", "blood_type"];
 
       const setClauses = [];
       const inputs = [];
