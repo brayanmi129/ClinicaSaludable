@@ -66,6 +66,10 @@ export const redirectToGoogleAuth = () => {
   window.location.href = import.meta.env.VITE_GOOGLE_AUTH_URL;
 }
 
+export const redirectToMSAuth = () => {
+  window.location.href = import.meta.env.VITE_MS_AUTH_URL;
+}
+
 export const completeOAuthLogin = async (navigate, setLoading, setError) => {
   const queryParams = new URLSearchParams(window.location.search);
   const token = queryParams.get("token");
