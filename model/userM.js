@@ -57,6 +57,7 @@ class UsersM {
   }
 
   async getById(id) {
+    console.log("ID en getByID", id);
     try {
       const pool = await getConnection();
       const result = await pool
@@ -86,6 +87,8 @@ class UsersM {
       FROM T_Users u
       LEFT JOIN T_Doctors d ON u.user_id = d.user_id
       LEFT JOIN T_Patients p ON u.user_id = p.user_id
+
+      WHERE u.user_id = @user_id
     `
         );
 
