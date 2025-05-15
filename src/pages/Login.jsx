@@ -4,7 +4,7 @@ import MSLogo from '../assets/logo-ms.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { loginWithEmailPassword, redirectToGoogleAuth, completeOAuthLogin } from '../utils/auth';
+import { loginWithEmailPassword, redirectToGoogleAuth, redirectToMSAuth, completeOAuthLogin } from '../utils/auth';
 import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/Button';
 import Logotype from '../components/Logotype';
@@ -96,7 +96,7 @@ const Login = () => {
                                 </button>
                             </div>
                             <div className='w-full h-[70px]'>
-                                <button className="cursor-pointer h-full flex items-center justify-center w-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition">
+                                <button className="cursor-pointer h-full flex items-center justify-center w-full border border-gray-300 rounded-md py-2 px-4 gap-2 hover:bg-gray-100 transition" onClick={redirectToMSAuth}>
                                     <img src={MSLogo} alt="Google" className="w-10 h-10" />
                                     <span className="text-gray-700">Ingresa con Microsoft</span>
                                 </button>
