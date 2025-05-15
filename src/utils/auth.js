@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export const loginWithEmailPassword = async (email, password) => {
   try {
     const response = await fetch(import.meta.env.VITE_AUTH_URL, {
@@ -78,7 +80,7 @@ export const completeOAuthLogin = async (navigate, setLoading, setError) => {
       getUserDataFromToken(token).then((userData) => {
         sessionStorage.setItem("userData", JSON.stringify(userData));
       });
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       setError(error.message || "Hubo un problema al validar tu sesión.");
     } finally {

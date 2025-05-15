@@ -10,8 +10,8 @@ const ListItem = ({ text, Icon }) => {
             <div
                 onClick={() => setOpen(!open)}
                 className={`w-full mb-2 font-medium py-3 px-5 flex items-center justify-between rounded-lg cursor-pointer
-                        transition-all duration-300 ease-in-out
-                        ${open ? 'bg-blue-600' : 'bg-transparent'} hover:bg-blue-600`}
+                        transition-all duration-300 ease-in-out hover:bg-gray-300/30
+                        ${open ? 'hover:bg-gray-300/30' : 'bg-transparent'} bg-gray-300/30`}
             >
                 <div className="flex items-center">
                     {Icon && <Icon className="h-5 w-5 text-white mr-2" />}

@@ -1,7 +1,7 @@
 const Divider = () => {
     return (
-        <div className="flex flex-col items-center">
-            <hr className="w-70 border-t border-white/40 my-5" />
+        <div className="flex w-full">
+            <hr className="w-100 border-white/40 my-5" />
         </div>
     );
 }

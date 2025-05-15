@@ -9,11 +9,21 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Ruta pública */}
         <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
+
+        {/* Rutas protegidas */}
+        <Route 
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
       </Routes>
     </Router>
   );
