@@ -12,18 +12,20 @@ class AuthM {
   }
 
   async authLocal(email, password) {
+    console.log("Autenticando usuario local");
     try {
       const pool = await getConnection();
       const result = await pool
         .request()
         .input("email", sql.VarChar, email)
         .query("SELECT * FROM T_Users WHERE email = @email;");
+
       const user = result.recordset[0];
       if (!user) return { error: "Usuario no encontrado" };
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) return { error: "Contraseña incorrecta" };
 
-      return { user };
+      return user;
     } catch (e) {
       console.log(e);
     }

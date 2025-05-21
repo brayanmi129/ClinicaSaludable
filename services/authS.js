@@ -36,10 +36,11 @@ class AuthS {
     try {
       const { email, password } = req.body;
       const result = await Auth.authLocal(email, password);
+      console.log("Resultado de la autenticación local:", result);
       if (result.error) {
         return res.status(401).json({ message: result.error });
       }
-      const user = result[0].user;
+      const user = result;
       const payload = {
         id: user.user_id,
         email: user.email,

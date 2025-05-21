@@ -20,6 +20,7 @@ router.post(
 
 router.get("/all", verifyJWT, LaboratoriesS.getLaboratories);
 router.get("/id/:id", verifyJWT, LaboratoriesS.getLaboratoriesByID);
+router.get("/me", verifyJWT, LaboratoriesS.getMyLaboratories);
 router.get("/patient/:id", verifyJWT, LaboratoriesS.getLaboratoriesByPatient);
 router.get("/doctor/:id", verifyJWT, LaboratoriesS.getLaboratoriesByDoctor);
 router.put("/update/:id", verifyJWT, LaboratoriesS.updateLaboratories);
