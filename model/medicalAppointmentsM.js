@@ -6,10 +6,25 @@ class MedicalAppointmentsM {
   async getAll() {
     try {
       const pool = await getConnection();
-      const result = await pool.request().query("SELECT * FROM T_MedicalAppointments;");
-      return result.recordsets[0];
+      const result = await pool.request().query(`
+        SELECT 
+          A.appointment_id,
+          A.appointment_type,
+          A.appointment_date,
+          A.appointment_time,
+          A.location,
+          A.status,
+          PU.user_id AS patient_id,
+          CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+          DU.user_id AS doctor_id,
+          CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+        FROM T_MedicalAppointments A
+        LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
+        LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id;
+      `);
+      return result.recordset;
     } catch (error) {
-      console.error("Error al obtener usuarios:", error);
+      console.error("Error al obtener citas médicas:", error);
       throw error;
     }
   }
@@ -17,10 +32,21 @@ class MedicalAppointmentsM {
   async getById(id) {
     try {
       const pool = await getConnection();
-      const result = await pool
-        .request()
-        .input("appointment_id", id)
-        .query("SELECT * FROM T_MedicalAppointments WHERE appointment_id = @appointment_id;");
+      const result = await pool.request().input(`appointment_id", id)
+        .query(' SELECT 
+        A.appointment_id,
+        A.appointment_type,
+        A.appointment_date,
+        A.appointment_time,
+        A.location,
+        A.status,
+        PU.user_id AS patient_id,
+        CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+        DU.user_id AS doctor_id,
+        CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+      FROM T_MedicalAppointments A
+      LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
+      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id; WHERE appointment_id = @appointment_id;`);
       return result.recordsets[0];
     } catch (error) {
       console.error("Error al obtener usuario por email:", error);
@@ -31,10 +57,21 @@ class MedicalAppointmentsM {
   async getByPatient(id) {
     try {
       const pool = await getConnection();
-      const result = await pool
-        .request()
-        .input("patient_id", id)
-        .query("SELECT * FROM T_MedicalAppointments WHERE patient_id = @patient_id;");
+      const result = await pool.request().input(`patient_id", id)
+        .query(" SELECT 
+        A.appointment_id,
+        A.appointment_type,
+        A.appointment_date,
+        A.appointment_time,
+        A.location,
+        A.status,
+        PU.user_id AS patient_id,
+        CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+        DU.user_id AS doctor_id,
+        CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+      FROM T_MedicalAppointments A
+      LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
+      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id; WHERE patient_id = @patient_id;`);
       return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las HC del usuario ${id}:`, error);
@@ -45,10 +82,20 @@ class MedicalAppointmentsM {
   async getByDoctor(id) {
     try {
       const pool = await getConnection();
-      const result = await pool
-        .request()
-        .input("doctor_id", id)
-        .query("SELECT * FROM T_MedicalAppointments WHERE doctor_id = @doctor_id;");
+      const result = await pool.request().input("doctor_id", id).query(` SELECT 
+        A.appointment_id,
+        A.appointment_type,
+        A.appointment_date,
+        A.appointment_time,
+        A.location,
+        A.status,
+        PU.user_id AS patient_id,
+        CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+        DU.user_id AS doctor_id,
+        CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+      FROM T_MedicalAppointments A
+      LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
+      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id; WHERE doctor_id = @doctor_id;`);
       return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las las citas del usuario ${id}:`, error);
