@@ -44,12 +44,40 @@ class UsersM {
       const pool = await getConnection();
       const result = await pool
         .request()
-        .input("email", email)
+        .input("email", `%${email}%`) // <-- Aquí va el comodín para búsqueda parcial
         .query(
-          "SELECT user_id, first_name , last_name, address , phone,birth_date , email ,role_name FROM T_Users WHERE email = @email"
+          `
+          SELECT 
+            user_id, first_name, last_name, address, phone, birth_date, email, role_name 
+          FROM T_Users 
+          WHERE email LIKE @email
+          `
         );
 
-      return result.recordset[0];
+      return result.recordset; // ya no devuelvas solo [0], pueden ser varios
+    } catch (error) {
+      console.error("Error al obtener usuario por email:", error);
+      throw error;
+    }
+  }
+
+  async getByName(first_name) {
+    console.log("first_name", first_name);
+    try {
+      const pool = await getConnection();
+      const result = await pool
+        .request()
+        .input("first_name", `%${first_name}%`)
+        .query(
+          `
+          SELECT 
+            user_id, first_name, last_name, address, phone, birth_date, email, role_name 
+          FROM T_Users 
+          WHERE first_name LIKE @first_name
+          `
+        );
+
+      return result.recordset;
     } catch (error) {
       console.error("Error al obtener usuario por email:", error);
       throw error;
@@ -92,7 +120,7 @@ class UsersM {
     `
         );
 
-      return result.recordset[0];
+      return result.recordset;
     } catch (error) {
       console.error("Error al obtener usuario por email:", error);
       throw error;
@@ -120,6 +148,7 @@ class UsersM {
     if (updatedFields.password) {
       updatedFields.password = await bcrypt.hash(updatedFields.password, 10);
     }
+
     try {
       const allowedFields = [
         "first_name",
@@ -132,8 +161,11 @@ class UsersM {
         "role_name",
       ];
 
-      const optionalFields = [, "blood_type", "specialty", "health_insurance", "allergies"];
+      const pool = await getConnection();
+      const transaction = new sql.Transaction(pool);
+      await transaction.begin();
 
+      const userRequest = new sql.Request(transaction);
       const setClauses = [];
       const inputs = [];
 
@@ -144,31 +176,73 @@ class UsersM {
         }
       }
 
-      if (setClauses.length === 0) {
-        throw new Error("No se proporcionaron campos para actualizar.");
+      if (setClauses.length > 0) {
+        inputs.forEach(({ name, value }) => {
+          userRequest.input(name, value);
+        });
+        userRequest.input("user_id", sql.Int, user_id);
+
+        const updateQuery = `
+          UPDATE T_Users
+          SET ${setClauses.join(", ")}
+          WHERE user_id = @user_id
+        `;
+
+        await userRequest.query(updateQuery);
       }
 
-      const pool = await getConnection();
-      const request = pool.request();
+      // Verifica si se desea actualizar el rol y manejar las tablas secundarias
+      if ("role_name" in updatedFields) {
+        const newRole = updatedFields.role_name;
+        console.log("Nuevo rol", newRole);
+        const roleRequest = new sql.Request(transaction);
+        roleRequest.input("user_id", sql.Int, user_id);
 
-      inputs.forEach(({ name, value }) => {
-        request.input(name, value);
-      });
+        // Eliminar datos anteriores en tablas secundarias
+        await roleRequest.query(`DELETE FROM T_Doctors WHERE user_id = @user_id`);
+        await roleRequest.query(`DELETE FROM T_Patients WHERE user_id = @user_id`);
 
-      request.input("user_id", user_id);
+        if (newRole === "DOCTOR") {
+          if (!updatedFields.specialty || !updatedFields.blood_type) {
+            throw new Error("Faltan campos obligatorios para el rol DOCTOR.");
+          }
 
-      const updateQuery = `
-        UPDATE T_Users
-        SET ${setClauses.join(", ")}
-        WHERE user_id = @user_id
-      `;
+          roleRequest.input("specialty", sql.VarChar(100), updatedFields.specialty);
+          roleRequest.input("blood_type", sql.VarChar(3), updatedFields.blood_type);
 
-      await request.query(updateQuery);
+          await roleRequest.query(`
+            INSERT INTO T_Doctors (user_id, blood_type, specialty)
+            VALUES (@user_id, @blood_type, @specialty)
+          `);
+        }
 
-      return { message: "Usuario actualizado correctamente." };
+        if (newRole === "PATIENT") {
+          if (
+            !updatedFields.health_insurance ||
+            !updatedFields.allergies ||
+            !updatedFields.blood_type
+          ) {
+            throw new Error("Faltan campos obligatorios para el rol PATIENT.");
+          }
+
+          roleRequest.input("health_insurance", sql.VarChar(100), updatedFields.health_insurance);
+          roleRequest.input("allergies", sql.Text, updatedFields.allergies);
+          roleRequest.input("blood_type", sql.VarChar(3), updatedFields.blood_type);
+
+          await roleRequest.query(`
+            INSERT INTO T_Patients (user_id, health_insurance, allergies, blood_type)
+            VALUES (@user_id, @health_insurance, @allergies, @blood_type)
+          `);
+        }
+      }
+
+      await transaction.commit();
+
+      console.log("Usuario actualizado exitosamente", user_id, updatedFields);
+      return { success: true, message: "Usuario actualizado correctamente." };
     } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-      throw error;
+      console.error("Error al actualizar el usuario:", error);
+      return { success: false, message: "Error al actualizar el usuario." };
     }
   }
 
@@ -247,7 +321,7 @@ class UsersM {
         roleReq.input("blood_type", sql.VarChar(3), blood_type);
 
         await roleReq.query(
-          `INSERT INTO T_Doctors (user_id, blood_type , specialty) VALUES (@user_id, @specialty, @blood_type)`
+          `INSERT INTO T_Doctors (user_id, blood_type , specialty) VALUES (@user_id, @blood_type, @specialty)`
         );
       } else if (role_name === "PATIENT") {
         roleReq.input("health_insurance", sql.VarChar(100), health_insurance);
@@ -264,13 +338,12 @@ class UsersM {
       console.log("Usuario Creado exitosamente", user_id, email, role_name);
       return {
         success: true,
-        message: "Usuario creado exitosamente",
+        message: `Usuario  ${user_id} creado exitosamente`,
         user_id,
         email,
         role_name,
       };
     } catch (err) {
-      console.error("Error al registrar:", err);
       return {
         success: false,
         message: "Error al registrar el usuario",

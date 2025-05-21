@@ -64,17 +64,3 @@ passport.use(
     }
   )
 );
-
-// passport.serializeUser((user, done) => {
-//   done(null, user.email);
-// });
-
-// passport.deserializeUser(async (email, done) => {
-//   try {
-//     const user = await UsersM.getByEmail(email);
-//     done(null, user);
-//   } catch (err) {
-//     console.error("Error deserializando usuario", err);
-//     done(err, null);
-//   }
-// });

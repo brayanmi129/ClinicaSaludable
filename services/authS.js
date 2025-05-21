@@ -5,8 +5,10 @@ const User = require("../model/UserM.js");
 
 class AuthS {
   async OAuth(req, res) {
+    console.log("Callback de autenticación");
+    console.log("Usuario autenticado:", req.user);
     try {
-      const user = req.user;
+      const user = req.user[0];
       console.log("Usuario autenticado:", user);
       if (!user) {
         console.log("No se encontró el usuario en la DB.");
@@ -37,7 +39,7 @@ class AuthS {
       if (result.error) {
         return res.status(401).json({ message: result.error });
       }
-      const user = result.user;
+      const user = result[0].user;
       const payload = {
         id: user.user_id,
         email: user.email,
@@ -78,7 +80,7 @@ class AuthS {
       console.log("ID", id);
       const userinfo = await User.getById(id);
       console.log("UserInfo", userinfo);
-      res.json(userinfo);
+      res.json(userinfo[0]);
     }
   }
 }

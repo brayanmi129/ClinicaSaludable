@@ -58,6 +58,22 @@ class LaboratoriesM {
     }
   }
 
+  async getByDoctor(id) {
+    try {
+      const pool = await getConnection();
+      const result = await pool
+        .request()
+        .input("doctor_id", sql.Int, id)
+        .query(
+          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.doctor_id  = @doctor_id "
+        );
+      return result.recordset;
+    } catch (error) {
+      console.error("Error al obtener los laboratorios:", error);
+      throw error;
+    }
+  }
+
   async upload(data, file) {
     const { lab_Name, lab_Date, patient_id, doctor_id } = data;
     const user = await UserM.getById(patient_id);

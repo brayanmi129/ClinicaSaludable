@@ -44,6 +44,22 @@ class UsersS {
     }
   }
 
+  async getUsersByName(req, res) {
+    const { name } = req.params;
+    try {
+      const result = await UsersM.getByName(name);
+
+      if (!result) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error al obtener usuario:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    }
+  }
+
   async getUsersByRole(req, res) {
     const { role } = req.params;
     try {
@@ -63,15 +79,17 @@ class UsersS {
   async updateUserById(req, res) {
     const { id } = req.params;
     const updatedFields = req.body;
+    console.log("ID en updateUserById", id);
+    console.log("Campos a actualizar", updatedFields);
 
     try {
+      console.log("entrando al try");
       const result = await UsersM.updateUserById(id, updatedFields);
-
-      if (!result) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+      if (result.success) {
+        res.status(200).json({ message: result.message });
+      } else {
+        res.status(400).json({ message: result.message });
       }
-
-      res.status(200).json(result);
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
       res.status(500).json({ message: "Error en el servidor" });
@@ -95,12 +113,14 @@ class UsersS {
 
   async registrerUser(req, res) {
     const userData = req.body;
+    console.log(userData);
     try {
       const result = await userM.registerUser(userData);
+      console.log(result);
       if (result.success) {
-        res.status(200).json({ message: `Usuario ${result.user_id} creado exitosamente` });
+        res.status(200).json({ message: result.message });
       } else {
-        res.status(404).json({ message: "Error al crear el usuario" });
+        res.status(400).json({ message: result.message });
       }
     } catch (e) {
       console.log(e);
