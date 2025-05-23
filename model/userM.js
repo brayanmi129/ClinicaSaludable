@@ -269,6 +269,7 @@ class UsersM {
 
   async registerUser(userData) {
     const {
+      user_id,
       first_name,
       last_name,
       address,
@@ -292,7 +293,7 @@ class UsersM {
       await transaction.begin();
 
       const request = new sql.Request(transaction);
-
+      request.input("user_id", sql.Int, user_id);
       request.input("first_name", sql.VarChar(100), first_name);
       request.input("last_name", sql.VarChar(100), last_name);
       request.input("address", sql.Text, address);
@@ -304,17 +305,17 @@ class UsersM {
 
       const insertUserQuery = `
         INSERT INTO T_Users 
-        (first_name, last_name, address, phone, birth_date, email, password, role_name)
+        (user_id, first_name, last_name, address, phone, birth_date, email, password, role_name)
         OUTPUT INSERTED.user_id
-        VALUES (@first_name, @last_name, @address, @phone, @birth_date, @email, @password, @role_name)
+        VALUES (@user_id, @first_name, @last_name, @address, @phone, @birth_date, @email, @password, @role_name)
       `;
 
       const result = await request.query(insertUserQuery);
-      const user_id = result.recordset[0].user_id;
+      const user_id_create = result.recordset[0].user_id;
 
       // Insertar en tabla secundaria
       const roleReq = new sql.Request(transaction);
-      roleReq.input("user_id", sql.Int, user_id);
+      roleReq.input("user_id", sql.Int, user_id_create);
 
       if (role_name === "DOCTOR") {
         roleReq.input("specialty", sql.VarChar(100), specialty);
@@ -344,6 +345,7 @@ class UsersM {
         role_name,
       };
     } catch (err) {
+      console.log("Error al crear el usuario", err);
       return {
         success: false,
         message: "Error al registrar el usuario",

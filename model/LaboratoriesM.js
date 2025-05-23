@@ -14,11 +14,20 @@ class LaboratoriesM {
   async getAll() {
     try {
       const pool = await getConnection();
-      const result = await pool
-        .request()
-        .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id;"
-        );
+      const result = await pool.request().query(
+        `SELECT 
+  L.lab_id,
+  L.lab_name,
+  L.lab_date,
+  L.file_link,
+  CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+  CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+FROM T_Laboratories L
+INNER JOIN T_Users PU ON L.patient_id = PU.user_id
+INNER JOIN T_Users DU ON L.doctor_id = DU.user_id;
+`
+      );
+      console.log(result.recordset);
       return result.recordset;
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
@@ -31,9 +40,18 @@ class LaboratoriesM {
       const pool = await getConnection();
       const result = await pool
         .request()
-        .input("patient_id", sql.Int, id)
+        .input("lab_id", sql.Int, id)
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.lab_id = 10;"
+          `SELECT 
+  L.lab_id, 
+  L.lab_name, 
+  L.lab_date, 
+  L.file_link,
+  CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+  CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+FROM T_Laboratories L
+INNER JOIN T_Users PU ON L.patient_id = PU.user_id
+INNER JOIN T_Users DU ON L.doctor_id = DU.user_id WHERE L.lab_id = @lab_id;`
         );
       return result.recordset[0];
     } catch (error) {
@@ -47,9 +65,20 @@ class LaboratoriesM {
       const pool = await getConnection();
       const result = await pool
         .request()
-        .input("patient_id", sql.Int, id)
+        .input("patient_Id", sql.Int, id)
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.patient_id  = @patient_id "
+          `SELECT 
+  L.lab_id, 
+  L.lab_name, 
+  L.lab_date, 
+  L.file_link,
+  CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+  CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+FROM T_Laboratories L
+INNER JOIN T_Users PU ON L.patient_id = PU.user_id
+INNER JOIN T_Users DU ON L.doctor_id = DU.user_id
+WHERE L.patient_id = @patient_id
+`
         );
       return result.recordset;
     } catch (error) {
@@ -63,9 +92,18 @@ class LaboratoriesM {
       const pool = await getConnection();
       const result = await pool
         .request()
-        .input("doctor_id", sql.Int, id)
+        .input("doctor_Id", sql.Int, id)
         .query(
-          "SELECT L.lab_id, L.lab_name, L.lab_date, L.file_link, CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name, CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name FROM T_Laboratories L INNER JOIN T_Patients P ON L.patient_id = P.patient_id INNER JOIN T_Users PU ON P.user_id = PU.user_id INNER JOIN T_Doctors D ON L.doctor_id = D.doctor_id INNER JOIN T_Users DU ON D.user_id = DU.user_id WHERE L.doctor_id  = @doctor_id "
+          `SELECT 
+  L.lab_id, 
+  L.lab_name, 
+  L.lab_date, 
+  L.file_link,
+  CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+  CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+FROM T_Laboratories L
+INNER JOIN T_Users PU ON L.patient_id = PU.user_id
+INNER JOIN T_Users DU ON L.doctor_id = DU.user_id WHERE L.doctor_Id  = @doctor_Id `
         );
       return result.recordset;
     } catch (error) {
@@ -75,8 +113,9 @@ class LaboratoriesM {
   }
 
   async upload(data, file) {
-    const { lab_Name, lab_Date, patient_id, doctor_id } = data;
-    const user = await UserM.getById(patient_id);
+    const { lab_Name, lab_Date, patient_Id, doctor_Id } = data;
+    console.log("data", data);
+    const user = await UserM.getById(patient_Id);
     const { email } = user;
     try {
       const blobName = `${email}/${file.originalname}`;
@@ -94,10 +133,10 @@ class LaboratoriesM {
         .input("labName", sql.VarChar, lab_Name)
         .input("labDate", sql.Date, lab_Date)
         .input("fileLink", sql.Text, file_link)
-        .input("patientId", sql.Int, patient_id)
-        .input("doctorId", sql.Int, doctor_id)
+        .input("patientId", sql.Int, patient_Id)
+        .input("doctorId", sql.Int, doctor_Id)
         .query(
-          `INSERT INTO T_Laboratories (lab_name, lab_date, file_link, patient_id, doctor_id)
+          `INSERT INTO T_Laboratories (lab_name, lab_date, file_link, patient_Id, doctor_Id)
          VALUES (@labName, @labDate, @fileLink, @patientId, @doctorId);`
         );
 
@@ -113,8 +152,8 @@ class LaboratoriesM {
         "lab_name",
         "lab_date",
         "file_link",
-        "patient_id", // normalmente no se cambia
-        "doctor_id", // podría cambiarse si es necesario
+        "patient_Id", // normalmente no se cambia
+        "doctor_Id", // podría cambiarse si es necesario
         "exam_date",
       ];
 

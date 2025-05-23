@@ -44,6 +44,7 @@ class MedicalRecordsS {
   }
 
   async uploadLaboratorie(req, res) {
+    console.log("entrando");
     try {
       const data = req.body;
       const file = req.file;
