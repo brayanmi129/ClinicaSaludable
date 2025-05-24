@@ -22,8 +22,6 @@ const Sidebar = () => {
         <ListItemDropdown text='Hospitalización' Icon={BuildingOfficeIcon}/>
         <Divider />
         <ListItem text='Ajustes' Icon={CogIcon} to='/dashboard/settings'/>
-        <Divider />
-        <ListItem text='Salir' Icon={ArrowLeftOnRectangleIcon} onClick={logoutUser} isDanger={true}/>
       </ul>
     </div>
   );

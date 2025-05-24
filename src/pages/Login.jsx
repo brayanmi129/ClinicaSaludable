@@ -66,7 +66,7 @@ const Login = () => {
             <div className="w-full h-screen shadow-xl/90 p-10 lg:p-20 flex flex-col justify-start items-center lg:w-3/4 lg:items-start overflow-auto">
                 <div className='w-full h-full lg:w-3/4 flex flex-col gap-5'>
                     <Logotype text="Clínica del Norte" isMobile={true}/>
-                    <div className='mt-auto mb-auto w-full lg:w-5/6'>
+                    <div className='mt-auto mb-auto w-full lg:w-full'>
                         <div className='w-full h-fit text-[2.2em] font-bold text-blue-600'>
                             <h3>Inicia sesión</h3>
                         </div>
