@@ -18,6 +18,7 @@ class AuthS {
       const payload = {
         id: user.user_id,
         email: user.email,
+        role: user.role_name,
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -44,6 +45,7 @@ class AuthS {
       const payload = {
         id: user.user_id,
         email: user.email,
+        role: user.role_name,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "3h",

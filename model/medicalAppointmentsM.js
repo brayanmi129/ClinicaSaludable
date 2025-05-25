@@ -57,21 +57,24 @@ class MedicalAppointmentsM {
   async getByPatient(id) {
     try {
       const pool = await getConnection();
-      const result = await pool.request().input(`patient_id", id)
-        .query(" SELECT 
-        A.appointment_id,
-        A.appointment_type,
-        A.appointment_date,
-        A.appointment_time,
-        A.location,
-        A.status,
-        PU.user_id AS patient_id,
-        CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
-        DU.user_id AS doctor_id,
-        CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
-      FROM T_MedicalAppointments A
-      LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
-      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id; WHERE patient_id = @patient_id;`);
+      const result = await pool.request().input("patient_id", sql.Int, id) // Usa comillas simples y pasa el tipo correctamente
+        .query(`
+          SELECT 
+            A.appointment_id,
+            A.appointment_type,
+            A.appointment_date,
+            A.appointment_time,
+            A.location,
+            A.status,
+            PU.user_id AS patient_id,
+            CONCAT(PU.first_name, ' ', PU.last_name) AS patient_name,
+            DU.user_id AS doctor_id,
+            CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
+          FROM T_MedicalAppointments A
+          LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
+          LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id
+          WHERE PU.user_id = @patient_id
+        `);
       return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las HC del usuario ${id}:`, error);

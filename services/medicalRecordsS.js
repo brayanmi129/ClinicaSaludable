@@ -101,6 +101,31 @@ class MedicalRecordsS {
       res.status(500).json({ message: "Error en el servidor" });
     }
   }
+  async getMyRecords(req, res) {
+    const { id, role } = req.user;
+    if (role === "DOCTOR") {
+      const result = await medicalRecordsM.getByDoctor(id);
+      if (!result) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      res.status(200).json(result);
+    } else if (role === "PATIENT") {
+      try {
+        const result = await medicalRecordsM.getByPatient(id);
+
+        if (!result) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        res.status(200).json(result);
+      } catch (error) {
+        console.error("Error al obtener usuario:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+      }
+    } else {
+      res.status(403).json({ message: "No tienes permiso para acceder a este recurso" });
+    }
+  }
 }
 
 module.exports = new MedicalRecordsS();

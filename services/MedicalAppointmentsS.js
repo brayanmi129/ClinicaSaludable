@@ -90,10 +90,26 @@ class MedicalRecordsS {
     }
   }
   async getMyAppointments(req, res) {
-    const { id } = req.user;
+    console.log(req.user);
+    const { id, role } = req.user;
     console.log(id);
     try {
-      const result = await medicalAppointmentsM.getByPatient(id);
+      if (role === "doctor") {
+        const result = await medicalAppointmentsM.getByDoctor(id);
+        if (!result) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        res.status(200).json(result);
+      }
+      if (role === "pacient") {
+        const result = await medicalAppointmentsM.getByPatient(id);
+        if (!result) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        res.status(200).json(result);
+      } else {
+        return res.status(403).json({ message: "Un Administrador no tiene esa informacion" });
+      }
 
       if (!result) {
         return res.status(404).json({ message: "Usuario no encontrado" });
