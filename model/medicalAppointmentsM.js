@@ -121,6 +121,9 @@ class MedicalAppointmentsM {
 
     const doctor = await Users.getById(doctor_id);
     const patient = await Users.getById(patient_id);
+    if (doctor.length === 0 || patient.length === 0) {
+      return { success: false, message: "Doctor o paciente no encontrado" };
+    }
     if (doctor[0].role_name !== "DOCTOR")
       return { success: false, message: "El usuario no es un doctor" };
     if (patient[0].role_name !== "PATIENT")
