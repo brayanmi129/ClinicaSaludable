@@ -62,12 +62,11 @@ class MedicalRecordsS {
     const appointmentData = req.body;
     try {
       const result = await medicalAppointmentsM.create(appointmentData);
-
-      if (!result) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+      if (!result || result.success === false) {
+        return res.status(400).json(result);
+      } else {
+        res.status(200).json(result);
       }
-
-      res.status(200).json(result);
     } catch (error) {
       console.error("Error al crear la cita:", error);
       res.status(500).json({ message: "Error en el servidor" });

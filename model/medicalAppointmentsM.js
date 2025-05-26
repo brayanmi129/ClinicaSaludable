@@ -119,6 +119,13 @@ class MedicalAppointmentsM {
 
     const pool = await getConnection();
 
+    const doctor = await Users.getById(doctor_id);
+    const patient = await Users.getById(patient_id);
+    if (doctor[0].role_name !== "DOCTOR")
+      return { success: false, message: "El usuario no es un doctor" };
+    if (patient[0].role_name !== "PATIENT")
+      return { success: false, message: "El usuario no es un paciente" };
+
     try {
       const request = pool.request();
 
@@ -148,7 +155,6 @@ class MedicalAppointmentsM {
       const result = await request.query(insertQuery);
       const appointment_id = result.recordset[0].appointment_id;
 
-      const pacient = await Users.getById(data.patient_id);
       const to = pacient[0].email;
       const name = pacient[0].first_name;
       const date = data.appointment_date;
