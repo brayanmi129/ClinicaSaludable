@@ -33,32 +33,45 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const citasProximas = citas.filter(c => {
-  if (!c.appointment_date || !c.appointment_time) return false;
+  const citasProximas = citas
+  .map(c => {
+    if (!c.appointment_date || !c.appointment_time) return null;
 
-  const dateObj = new Date(c.appointment_date);
-  const timeObj = new Date(c.appointment_time);
+    const date = new Date(c.appointment_date);
+    const time = new Date(c.appointment_time);
 
-  const fechaHora = new Date(
-    dateObj.getFullYear(),
-    dateObj.getMonth(),
-    dateObj.getDate(),
-    timeObj.getHours(),
-    timeObj.getMinutes()
-  );
+    const fechaHora = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.getHours(),
+      time.getMinutes()
+    );
 
-  return !isNaN(fechaHora) && fechaHora >= new Date();
-  });
+    return { ...c, fechaHora };
+  })
+  .filter(c => c && !isNaN(c.fechaHora) && c.fechaHora >= new Date())
+  .sort((a, b) => a.fechaHora - b.fechaHora);
 
-  const citasPasadas = citas.filter(c => {
-    if (!c.appointment_date || !c.appointment_time) return false;
+const citasPasadas = citas
+  .map(c => {
+    if (!c.appointment_date || !c.appointment_time) return null;
 
-    const date = new Date(c.appointment_date).toISOString().split('T')[0];
-    const time = new Date(c.appointment_time).toISOString().split('T')[1].slice(0, 5);
+    const date = new Date(c.appointment_date);
+    const time = new Date(c.appointment_time);
 
-    const fechaHora = new Date(`${date}T${time}`);
-    return !isNaN(fechaHora) && fechaHora < new Date();
-  });
+    const fechaHora = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.getHours(),
+      time.getMinutes()
+    );
+
+    return { ...c, fechaHora };
+  })
+  .filter(c => c && !isNaN(c.fechaHora) && c.fechaHora < new Date())
+  .sort((a, b) => b.fechaHora - a.fechaHora);
 
   if (loading) {
     return (
@@ -68,6 +81,18 @@ const Home = () => {
       </div>
     );
   }
+
+  const calcularEdad = (fechaNacimiento) => {
+  if (!fechaNacimiento) return '';
+  const nacimiento = new Date(fechaNacimiento);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const mes = hoy.getMonth() - nacimiento.getMonth();
+  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+    edad--;
+  }
+  return edad;
+};
 
   return (
     <div className="flex flex-col h-fit pt-4 justify-start">
@@ -84,40 +109,39 @@ const Home = () => {
 
         {/* General Information */}
         <div className="row-start-4 lg:row-start-3 sm:col-start-1 xl:col-start-2 xl:row-start-1 lg:col-start-2 flex flex-col bg-white py-8 px-5 shadow-lg rounded-lg hover:scale-105 transition-transform duration-200 hover:ring-1 ring-blue-500 overflow-x-auto">
-          <div className='flex items-center gap-5 h-fit mb-5'>
-            <div>
-              <p className="text-lg font-bold">Información general</p>
-            </div>
-            <div
-              className='rounded-full bg-blue-500 w-fit p-2 cursor-pointer hover:scale-105 transition-transform duration-200'
-              onClick={() => navigate('/user-profile?edit=true')}
+                    <div className='flex items-center justify-between mb-5'>
+            <p className="text-lg font-bold">Historia clínica</p>
+            <button 
+              className='flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded-md cursor-pointer hover:bg-blue-600 transition duration-200 text-sm'
+              onClick={() => navigate('/medic-history?edit=true')}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" className="w-6 h-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" className="size-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
               </svg>
-            </div>
+              Editar
+            </button>
           </div>
           <table className='w-full table-fixed'>
             <tbody>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3 w-1/3">ID de paciente:</td>
-                <td className="text-left font-normal px-3 truncate max-w-full">{userData?.patient_id || ''}</td>
+                <td className="text-left font-semibold px-3 w-[30%] text-sm lg:text-base">Tu ID:</td>
+                <td className="text-left font-normal px-3 truncate max-w-full text-sm lg:text-base">{userData?.user_id || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3 w-1/3">Dirección:</td>
-                <td className="text-left font-normal px-3 break-words max-w-full">{userData?.address || ''}</td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Dirección:</td>
+                <td className="text-left font-normal px-3 break-words max-w-full text-sm lg:text-base">{userData?.address || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3 w-1/3">Fecha de nacimiento:</td>
-                <td className="text-left font-normal px-3 truncate max-w-full">{userData?.birth_date || ''}</td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base truncate">Edad</td>
+                <td className="text-left font-normal px-3 truncate max-w-full text-sm lg:text-base">{userData?.birth_date ? `${calcularEdad(userData.birth_date)} años` : ''}</td>
               </tr>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3 w-1/3">Correo:</td>
-                <td className="text-left font-normal px-3 truncate max-w-full">{userData?.email || ''}</td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Correo:</td>
+                <td className="text-left font-normal px-3 truncate max-w-full text-sm lg:text-base">{userData?.email || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3 w-1/3">Teléfono:</td>
-                <td className="text-left font-normal px-3 v max-w-full">{userData?.phone || ''}</td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Teléfono:</td>
+                <td className="text-left font-normal px-3 max-w-full text-sm lg:text-base">{userData?.phone || ''}</td>
               </tr>
             </tbody>
           </table>
@@ -125,32 +149,34 @@ const Home = () => {
 
         {/* Medical History */}
         <div className="row-start-3 sm:col-start-1 xl:col-start-3 xl:row-start-1 lg:col-start-2 lg:row-start-2 flex flex-col bg-white py-8 px-5 shadow-lg rounded-lg hover:scale-101 transition-transform duration-200 hover:ring-1 ring-blue-500">
-          <div className='flex items-center gap-5 h-fit'>
-            <div>
-              <p className="text-lg font-bold mb-5">Historia clínica</p>
-            </div>
-            <div className='rounded-full bg-blue-500 w-fit p-2 mb-5 cursor-pointer hover:scale-105 transition-transform duration-200' onClick={() => navigate('/medic-history?edit=true')}>
+          <div className='flex items-center justify-between mb-5'>
+            <p className="text-lg font-bold">Historia clínica</p>
+            <button 
+              className='flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded-md cursor-pointer hover:bg-blue-600 transition duration-200 text-sm'
+              onClick={() => navigate('/medic-history?edit=true')}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" className="size-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
               </svg>
-            </div>
+              Editar
+            </button>
           </div>
           <table className='w-full h-fit'>
             <tbody>
               <tr className="border-b border-gray-200 py-2 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3">Alergias: </td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Alergias: </td>
                 <td className="text-left font-normal">{userData?.allergies || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 py-2 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3">RH: </td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">RH: </td>
                 <td className="text-left font-normal">{userData?.blood_type || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 py-2 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3">Seguro: </td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Seguro: </td>
                 <td className="text-left font-normal">{userData?.health_insurance || ''}</td>
               </tr>
               <tr className="border-b border-gray-200 py-2 hover:bg-blue-100 h-10 transition duration-200">
-                <td className="text-left font-semibold px-3">Doctor: </td>
+                <td className="text-left font-semibold px-3 text-sm lg:text-base">Doctor: </td>
                 <td className="text-left font-normal">{userData?.doctor_id || ''}</td>
               </tr>
             </tbody>

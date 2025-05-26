@@ -25,13 +25,13 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
   return (
     <div className={`w-full flex items-stretch rounded-md py-2 ${statusColor}`}>
       {/* Fecha y hora */}
-      <div className={`text-sm lg:text-base w-[20%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
+      <div className={`text-sm lg:text-base w-[25%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
         <span className="text-xs text-gray-700 truncate">{date}</span>
         <span className="text-md font-semibold text-gray-900 truncate">{time}</span>
       </div>
 
       {/* Servicio */}
-      <div className={`text-sm lg:text-base w-[40%] md:w-[25%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
+      <div className={`text-sm lg:text-base w-[30%] md:w-[25%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
         <span className="text-sm text-gray-700">Servicio</span>
         <span className="text-md font-semibold text-gray-900 truncate">{service}</span>
       </div>
@@ -43,7 +43,7 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
       </div>
 
       {/* Consultorio */}
-      <div className={`text-sm lg:text-base w-[30%] md:w-[20%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
+      <div className={`text-sm lg:text-base w-[35%] md:w-[20%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
         <span className="text-sm text-gray-700">Consultorio</span>
         <span className="text-md font-semibold text-gray-900 truncate">{location}</span>
       </div>
