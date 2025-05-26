@@ -93,14 +93,14 @@ class MedicalRecordsS {
     const { id, role } = req.user;
     console.log(id);
     try {
-      if (role === "doctor") {
+      if (role === "DOCTOR") {
         const result = await medicalAppointmentsM.getByDoctor(id);
         if (!result) {
           return res.status(404).json({ message: "Usuario no encontrado" });
         }
         res.status(200).json(result);
       }
-      if (role === "pacient") {
+      if (role === "PATIENT") {
         const result = await medicalAppointmentsM.getByPatient(id);
         if (!result) {
           return res.status(404).json({ message: "Usuario no encontrado" });

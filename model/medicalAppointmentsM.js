@@ -158,8 +158,8 @@ class MedicalAppointmentsM {
       const result = await request.query(insertQuery);
       const appointment_id = result.recordset[0].appointment_id;
 
-      const to = pacient[0].email;
-      const name = pacient[0].first_name;
+      const to = patient[0].email;
+      const name = patient[0].first_name;
       const date = data.appointment_date;
       const time = data.appointment_time;
       const emaildata = { to, date, time, name };
