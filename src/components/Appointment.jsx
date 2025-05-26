@@ -24,12 +24,25 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
 
   const formattedDate = new Date(date).toLocaleDateString('es-ES', { month: 'long', day: 'numeric' });
 
+  const formatTime = (time24) => {
+    const [hourStr, minute] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const ampm = hour >= 12 ? 'pm' : 'am';
+    hour = hour % 12 || 12;
+    return `${hour}:${minute} ${ampm}`;
+  };
+
+  const formatLocation = (location) => {
+    if (!location) return '';
+    return location.replace(/^Consultorio\s*/i, '');
+  };
+
   return (
     <div className={`w-full flex items-stretch rounded-md py-2 ${statusColor}`}>
       {/* Fecha y hora */}
-      <div className={`text-sm lg:text-base w-[25%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
-        <span className="text-xs text-gray-700 truncate">{formattedDate}</span>
-        <span className="text-md font-semibold text-gray-900 truncate">{time}</span>
+      <div className={`text-sm lg:text-base w-[30%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
+        <span className="text-xs text-gray-900 truncate">{formatTime(time)}</span>
+        <span className="text-md font-semibold text-gray-900 truncate">{formattedDate}</span>
       </div>
 
       {/* Servicio */}
@@ -45,9 +58,9 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
       </div>
 
       {/* Consultorio */}
-      <div className={`text-sm lg:text-base w-[35%] md:w-[20%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
+      <div className={`text-sm lg:text-base w-[30%] md:w-[20%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
         <span className="text-sm text-gray-700">Consultorio</span>
-        <span className="text-md font-semibold text-gray-900 truncate">{location}</span>
+        <span className="text-md font-semibold text-gray-900 truncate">{formatLocation(location)}</span>
       </div>
 
       {/* Estado - oculto por debajo de md */}
