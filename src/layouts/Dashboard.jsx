@@ -1,15 +1,15 @@
 import LogotypeCentered from "../components/LogotypeCentered";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Divider from "../components/Divider";
 import { useState, useEffect, useRef } from "react";
+import { logoutUser } from "../utils/auth";
 
 const Dashboard = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const menuRef = useRef();
-  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsSidebarVisible(prev => !prev);
@@ -20,8 +20,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
-    navigate("/login");
+    logoutUser();
   };
 
   useEffect(() => {

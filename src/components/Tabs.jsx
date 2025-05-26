@@ -41,6 +41,7 @@ const Tabs = ({ tab1Name, tab2Name, citasTab1, citasTab2 }) => {
                 time={cita.appointment_time.split("T")[1].slice(0, 5)}
                 doctor={cita.doctor_name}
                 service={cita.appointment_type}
+                location={cita.location}
                 status={cita.status}
               />
             ))
@@ -60,6 +61,7 @@ const Tabs = ({ tab1Name, tab2Name, citasTab1, citasTab2 }) => {
                 time={cita.appointment_time.split("T")[1].slice(0, 5)}
                 doctor={cita.doctor_name}
                 service={cita.appointment_type}
+                location={cita.location}
                 status={cita.status}
               />
             ))

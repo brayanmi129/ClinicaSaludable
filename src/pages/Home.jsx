@@ -48,7 +48,7 @@ const Home = () => {
   );
 
   return !isNaN(fechaHora) && fechaHora >= new Date();
-});
+  });
 
   const citasPasadas = citas.filter(c => {
     if (!c.appointment_date || !c.appointment_time) return false;
@@ -117,7 +117,7 @@ const Home = () => {
               </tr>
               <tr className="border-b border-gray-200 hover:bg-blue-100 h-10 transition duration-200">
                 <td className="text-left font-semibold px-3 w-1/3">Teléfono:</td>
-                <td className="text-left font-normal px-3 truncate max-w-full">{userData?.phone || ''}</td>
+                <td className="text-left font-normal px-3 v max-w-full">{userData?.phone || ''}</td>
               </tr>
             </tbody>
           </table>
@@ -158,14 +158,13 @@ const Home = () => {
         </div>
 
         {/* Appointments */}
-        <div className="row-start-1 xl:col-start-1 xl:col-span-2 xl:row-start-2 lg:col-start-1 lg:row-start-1 max-h-[400px] h-[350px] flex flex-col items-center justify-center bg-white py-8 px-5 shadow-lg rounded-lg hover:scale-101 transition-transform duration-200 hover:ring-1 ring-blue-500">
+        <div className="row-start-1 lg:col-span-2 xl:col-start-1 xl:col-span-2 xl:row-start-2 lg:col-start-1 lg:row-start-1 max-h-[400px] h-[350px] flex flex-col items-center justify-center bg-white py-8 px-5 shadow-lg rounded-lg hover:scale-101 transition-transform duration-200 hover:ring-1 ring-blue-500">
           <div className='flex w-full max-h-1/6 items-center py-2 justify-between'>
             <div className='w-fit h-fit'>
               <p className="text-lg font-bold">Tus citas</p>
             </div>
             <div 
               className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded-md cursor-pointer hover:bg-blue-600 transition duration-200 shadow-sm text-sm"
-              onClick={() => navigate('/appointments')}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
