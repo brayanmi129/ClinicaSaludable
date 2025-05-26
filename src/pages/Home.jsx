@@ -238,7 +238,7 @@ const citasPasadas = citas
                   <div className="w-fit h-full flex items-center justify-center">
                     <button
                       className="cursor-pointer h-[35px] bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg flex items-center gap-2 text-sm transition duration-200 shadow-sm hover:shadow-md"
-                      onClick={() => window.location.href = result.file_link}
+                      onClick={() => window.open(result.file_link, '_blank')}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
