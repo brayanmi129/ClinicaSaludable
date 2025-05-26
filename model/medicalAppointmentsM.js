@@ -1,6 +1,6 @@
 const { getConnection, sql } = require("../controler/db");
 const { sendEmail } = require("../controler/emails");
-const PatientsM = require("./patientsM");
+const Users = require("./UserM");
 
 class MedicalAppointmentsM {
   async getAll() {
@@ -148,9 +148,9 @@ class MedicalAppointmentsM {
       const result = await request.query(insertQuery);
       const appointment_id = result.recordset[0].appointment_id;
 
-      const pacient = await PatientsM.getById(data.patient_id);
-      const to = pacient.email;
-      const name = pacient.first_name;
+      const pacient = await Users.getById(data.patient_id);
+      const to = pacient[0].email;
+      const name = pacient[0].first_name;
       const date = data.appointment_date;
       const time = data.appointment_time;
       const emaildata = { to, date, time, name };
