@@ -22,11 +22,13 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
     CANCELED: 'Cancelada',
   };
 
+  const formattedDate = new Date(date).toLocaleDateString('es-ES', { month: 'long', day: 'numeric' });
+
   return (
     <div className={`w-full flex items-stretch rounded-md py-2 ${statusColor}`}>
       {/* Fecha y hora */}
       <div className={`text-sm lg:text-base w-[25%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
-        <span className="text-xs text-gray-700 truncate">{date}</span>
+        <span className="text-xs text-gray-700 truncate">{formattedDate}</span>
         <span className="text-md font-semibold text-gray-900 truncate">{time}</span>
       </div>
 
