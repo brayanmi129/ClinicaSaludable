@@ -71,7 +71,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="w-full h-full py-8 px-10 overflow-auto">
+      {/* Outlet */}
+      <div className="w-full h-full py-2 px-3 lg:py-8 lg:px-10 overflow-auto">
         <div className="w-full h-20 border-b-2 border-gray-200 flex items-center text-3xl font-bold text-blue-600 justify-between">
           <div>
             <h1>¡Hola, {userData.first_name}!</h1>

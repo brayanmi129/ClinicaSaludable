@@ -70,7 +70,7 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col h-fit pt-8 justify-start">
+    <div className="flex flex-col h-fit pt-4 justify-start">
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 auto-rows-auto gap-4 lg:text-sm xl:text-base">
         {/* User Profile */}
         <div className="row-start-5 lg:row-start-3 xl:col-start-1 xl:col-span-1 xl:row-start-1 lg:col-start-1 max-h-[400px] h-[350px] flex flex-col items-center justify-center bg-white py-8 px-5 shadow-lg rounded-lg hover:scale-101 transition-transform duration-200 hover:ring-1 ring-blue-500 cursor-pointer" onClick={() => navigate('/user-profile')}>
@@ -194,16 +194,19 @@ const Home = () => {
               <p className='text-gray-500'>No hay resultados disponibles.</p>
             ) : (
               labResults.map((result, index) => (
-                <div className='flex flex-row gap-2 justify-between items-center border-b border-gray-200 hover:bg-blue-100 transition duration-200 px-3 py-2' key={index}>
-                  <div key={index} className='flex items-center gap-4'>
+                <div
+                  className="flex flex-row gap-2 justify-between items-center border-b border-gray-200 hover:bg-blue-100 transition duration-200 py-2"
+                  key={index}
+                >
+                  <div className="flex items-center gap-4 max-w-[60%] min-w-0">
                     <div className='w-6 h-6 text-blue-500'>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className='w-8 h-8'>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                       </svg>
                     </div>
-                    <div className='flex flex-col'>
-                      <p className='text-sm text-gray-500'>{new Date(result.lab_date).toISOString().split('T')[0]}</p>
-                      <p className='font-semibold'>{result.lab_name}</p>
+                    <div className='flex flex-col truncate'>
+                      <p className='text-xs lg:text-sm text-gray-500'>{new Date(result.lab_date).toISOString().split('T')[0]}</p>
+                      <p className='font-semibold truncate text-sm lg:text-base' title={result.lab_name}>{result.lab_name}</p>
                     </div>
                   </div>
                   <div className="w-fit h-full flex items-center justify-center">
