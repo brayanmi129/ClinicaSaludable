@@ -14,6 +14,7 @@ import PrimaryButton from '../components/Button';
 import Logotype from '../components/Logotype';
 
 const Login = () => {
+  document.title = "Ingresa - Clinica del Norte";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);

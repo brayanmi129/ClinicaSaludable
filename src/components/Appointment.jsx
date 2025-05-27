@@ -1,15 +1,15 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-const Appointment = ({ date, time, doctor, service, location, status }) => {
+const Appointment = ({ date, time, doctor, service, location, status, onClick }) => {
   const statusColor = {
-    SCHEDULED: 'bg-yellow-100 border-l-4 border-yellow-400',
+    SCHEDULED: 'bg-blue-100 border-l-4 border-blue-400',
     COMPLETED: 'bg-green-100 border-l-4 border-green-400',
     MISSED: 'bg-red-100 border-l-4 border-red-400',
     CANCELED: 'bg-red-100 border-l-4 border-red-400',
   }[status] || 'bg-gray-100 border-l-4 border-gray-400';
 
   const dividerColor = {
-    SCHEDULED: 'border-yellow-400',
+    SCHEDULED: 'border-blue-400',
     COMPLETED: 'border-green-400',
     MISSED: 'border-red-400',
     CANCELED: 'border-red-400',
@@ -22,7 +22,14 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
     CANCELED: 'Cancelada',
   };
 
-  const formattedDate = new Date(date).toLocaleDateString('es-ES', { month: 'long', day: 'numeric' });
+  const formatDate = (dateStr) => {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day);
+
+    const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
+                  'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    return `${day} de ${meses[month - 1]}`;
+  };
 
   const formatTime = (time24) => {
     const [hourStr, minute] = time24.split(':');
@@ -38,11 +45,11 @@ const Appointment = ({ date, time, doctor, service, location, status }) => {
   };
 
   return (
-    <div className={`w-full flex items-stretch rounded-md py-2 ${statusColor}`}>
+    <div className={`cursor-pointer w-full flex items-stretch rounded-md py-2 ${statusColor}`} onClick={onClick}>
       {/* Fecha y hora */}
       <div className={`text-sm lg:text-base w-[30%] md:w-[10%] flex flex-col justify-center px-2 border-r ${dividerColor}`}>
         <span className="text-xs text-gray-900 truncate">{formatTime(time)}</span>
-        <span className="text-md font-semibold text-gray-900 truncate">{formattedDate}</span>
+        <span className="text-md font-semibold text-gray-900 truncate">{formatDate(date)}</span>
       </div>
 
       {/* Servicio */}
