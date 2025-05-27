@@ -1,30 +1,31 @@
-import {
-  CalendarIcon,
-  BeakerIcon,
-  DocumentIcon,
-  BuildingOfficeIcon,
-  CogIcon,
-  ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
-
-import ListItemDropdown from "./ListItemDropdown";
-import ListItem from "./ListItem";
-import Divider from "./Divider";
-import { logoutUser } from "../utils/auth";
+import SidebarAdmin from "./SidebarAdmin";
+import SidebarDoctor from "./SidebarDoctor";
+import SidebarPatient from "./SidebarPatient";
 
 const Sidebar = () => {
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
+
+  if (userData?.role_name === "ADMIN") {
+    return (
+      <>
+        <SidebarAdmin />
+      </>
+    );
+  }
+
+  if (userData?.role_name === "DOCTOR") {
+    return (
+      <>
+        <SidebarDoctor />
+      </>
+    );
+  }
+
   return (
-    <div className="w-full h-full flex">
-      <ul className="w-full h-fit">
-        <ListItemDropdown text='Citas' Icon={CalendarIcon}/>
-        <ListItemDropdown text='Laboratorios' Icon={BeakerIcon}/>
-        <ListItemDropdown text='Documentos' Icon={DocumentIcon}/>
-        <ListItemDropdown text='Hospitalización' Icon={BuildingOfficeIcon}/>
-        <Divider />
-        <ListItem text='Ajustes' Icon={CogIcon} to='/dashboard/settings'/>
-      </ul>
-    </div>
+    <>
+      <SidebarPatient />
+    </>
   );
-}
+};
 
 export default Sidebar;
