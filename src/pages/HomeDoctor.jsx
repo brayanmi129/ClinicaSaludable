@@ -381,14 +381,14 @@ export default function HomeDoctor() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 items-end">
                 <input
                   type="text"
-                  placeholder="Filtrar por nombre de paciente"
+                  placeholder="Nombre de paciente"
                   value={myFilterPatientName}
                   onChange={(e) => setMyFilterPatientName(e.target.value)}
                   className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="text"
-                  placeholder="Filtrar por nombre de examen"
+                  placeholder="Nombre de examen"
                   value={myFilterLabName}
                   onChange={(e) => setMyFilterLabName(e.target.value)}
                   className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -475,26 +475,26 @@ export default function HomeDoctor() {
         {/* --- Vista: Consultar Laboratorio --- */}
         {activeTab === "consultar" && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 items-end">
               <input
                 type="text"
                 placeholder="ID del paciente"
                 value={consultFilterPatientId}
                 onChange={(e) => setConsultFilterPatientId(e.target.value)}
-                className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 col-span-full lg:col-span-2"
               />
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 col-span-full lg:col-span-2">
                 <button
                   onClick={handleSearch}
-                  className="px-8 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-2"
+                  className="px-8 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-2 w-full md:w-auto"
                 >
                   <Search size={18} /> Buscar
                 </button>
                 <button
                   onClick={clearSearch}
-                  className="px-8 py-3 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition flex items-center justify-center gap-2"
+                  className="px-8 py-3 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition flex items-center justify-center gap-2 w-full md:w-auto"
                 >
-                  limpiar filtro
+                  Limpiar filtro
                 </button>
               </div>
             </div>
