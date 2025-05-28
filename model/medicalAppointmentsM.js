@@ -98,7 +98,7 @@ class MedicalAppointmentsM {
         CONCAT(DU.first_name, ' ', DU.last_name) AS doctor_name
       FROM T_MedicalAppointments A
       LEFT JOIN T_Users PU ON A.patient_id = PU.user_id
-      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id; WHERE doctor_id = @doctor_id;`);
+      LEFT JOIN T_Users DU ON A.doctor_id = DU.user_id  WHERE doctor_id = @doctor_id;`);
       return result.recordsets;
     } catch (error) {
       console.error(`Error al obtener las las citas del usuario ${id}:`, error);
@@ -124,10 +124,10 @@ class MedicalAppointmentsM {
     if (doctor.length === 0 || patient.length === 0) {
       return { success: false, message: "Doctor o paciente no encontrado" };
     }
-    if (doctor[0].role_name !== "DOCTOR")
-      return { success: false, message: "El usuario no es un doctor" };
-    if (patient[0].role_name !== "PATIENT")
-      return { success: false, message: "El usuario no es un paciente" };
+    // if (doctor[0].role_name !== "DOCTOR")
+    //   return { success: false, message: "El usuario no es un doctor" };
+    // if (patient[0].role_name !== "PATIENT")
+    //   return { success: false, message: "El usuario no es un paciente" };
 
     try {
       const request = pool.request();
