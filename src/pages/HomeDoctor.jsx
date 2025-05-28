@@ -284,7 +284,7 @@ export default function HomeDoctor() {
     formData.append("doctor_Id", doctorId);
 
     try {
-      const response = await fetch("http://localhost:3000/labs/create", {
+      const response = await fetch("https://clinica-api-managment.azure-api.net/labs/create", {
         method: "POST",
         body: formData,
         headers: {
